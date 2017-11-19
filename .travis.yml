@@ -6,8 +6,8 @@ after_success:
 - if [ "$TRAVIS_BRANCH" == "docker" ]; then
     docker login -u "$docker_username" -p "$docker_password";
     docker build -t sau2000:latest .;
-    docker tag sau2000:latest sau2000/sau2000:latest;
-    docker push sau2000/sau2000:latest;
+    docker tag sau2000:latest sau2000:latest;
+    docker push sau2000:latest;
     fi
 
 install:
