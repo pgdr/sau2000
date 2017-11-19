@@ -48,12 +48,18 @@ class SheepTestcase(TestCase):
         self.assertTrue(sau.alive)
 
     def test_parenthood(self):
-        blr = ('britanna', 'lolcakes', 'rambo')
-        _,l,r = [Sheep.objects.get(name=n) for n in blr]
+        lr = ('lolcakes', 'rambo')
+        l, r = [Sheep.objects.get(name=n) for n in lr]
+        self.assertIsNone(l.father)
+        self.assertIsNone(l.mother)
+        self.assertIsNone(r.father)
+        self.assertIsNone(r.mother)
+
         ram = Sheep.objects.create(
             name='boy',
             birth_date_utc=datetime.now(),
         )
+
         ram.save()
         ram.father = r
         ram.mother = l
