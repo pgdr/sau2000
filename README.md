@@ -1,6 +1,6 @@
-# Sau 2000 - The industrial Sheep app
+# Sau 2000 - The industrial Sheep counting application
 
-The industrial Sheep app has finally arrived.
+The industrial Sheep counting application has finally arrived.
 
 
 ```
