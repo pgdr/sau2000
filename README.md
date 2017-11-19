@@ -5,6 +5,7 @@ The industrial Sheep app has finally arrived.
 
 ```
 git clone https://github.com/pgdr/sau2000.git
+cd sau2000
 virtualenv env
 source env/bin/activate
 pip install -r requirements.txt

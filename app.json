@@ -1,0 +1,8 @@
+{
+  "name": "Sau 2000",
+  "description": "A sheep counting application.",
+  "image": "heroku/python",
+  "repository": "https://github.com/pgdr/sau2000",
+  "keywords": ["python", "django" ],
+  "addons": [ "heroku-postgresql" ]
+}
