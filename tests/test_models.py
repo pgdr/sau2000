@@ -2,17 +2,26 @@ from datetime import datetime
 from django.test import TestCase
 from sau.models import Sheep
 
+SAUS = [
+    {
+        'name': 'britanna',
+        'birth_date_utc': datetime.now(),
+        'sex': 'f',
+    },
+    {
+        'name': 'lolcakes',
+        'birth_date_utc': datetime.now(),
+        'sex': 'f',
+        'ear_tag': '2608',
+        'ear_tag_color': 'r',
+    },
+]
+
 
 class SheepTestcase(TestCase):
     def setUp(self):
-        self.instance = Sheep.objects.create(name='britanna',
-                                             birth_date_utc=datetime.now(),
-                                             sex='f')
-        Sheep.objects.create(name='lolcakes',
-                             birth_date_utc=datetime.now(),
-                             sex='f',
-                             ear_tag='2608',
-                             ear_tag_color='r')
+        for sau in SAUS:
+            Sheep.objects.create(**sau)
 
     def test_sheep_name(self):
         sau = Sheep.objects.get(name='britanna')
