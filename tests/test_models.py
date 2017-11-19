@@ -55,8 +55,8 @@ class SheepTestcase(TestCase):
             birth_date_utc=datetime.now(),
         )
         ram.save()
-        ram.father.add(r)
-        ram.mother.add(l)
+        ram.father = r
+        ram.mother = l
         ram.save()
-        self.assertEqual(l, ram.the_mother)
-        self.assertEqual(r, ram.the_father)
+        self.assertEqual(l, ram.mother)
+        self.assertEqual(r, ram.father)
