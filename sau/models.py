@@ -17,8 +17,20 @@ SEXES = (
     ('f', 'Ewe'),
 )
 
+COLOR = (
+    ('r', 'Red'),
+    ('w', 'White'),
+    ('y', 'Yellow'),
+    ('g', 'Green'),
+    ('b', 'Blue'),
+    ('a', 'Gray'),
+    ('c', 'Cyan'),
+    ('k', 'Black'),
+)
+
 class Sheep(models.Model):
     ear_tag = models.CharField(max_length=100)
+    ear_tag_color = models.CharField(max_length=1, choices=COLOR, default='w')
     birth_date_utc = models.DateTimeField('born', auto_now_add=False)
     name = models.CharField(max_length=100)
     main_picture = models.ImageField()
@@ -26,5 +38,13 @@ class Sheep(models.Model):
     fat_percentage = models.FloatField(null=True)
     weight = models.FloatField(null=True)
     sex = models.CharField(max_length=1, choices=SEXES)
-    mother = models.ManyToManyField('self')
-    father = models.ManyToManyField('self')
+    mother = models.ManyToManyField('self', blank=True)
+    father = models.ManyToManyField('self', blank=True)
+
+    @property
+    def alive(self):
+        return not self.quality
+
+    @property
+    def colored_tag(self):
+        return self.ear_tag_color, self.ear_tag
