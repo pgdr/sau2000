@@ -1,4 +1,4 @@
-# Sau 2000 - The industrial Sheep counting application
+# [![Build Status](https://travis-ci.org/pgdr/sau2000.svg?branch=master)](https://travis-ci.org/pgdr/sau2000) Sau 2000 - The industrial Sheep counting application
 
 The industrial Sheep counting application has finally arrived.
 
