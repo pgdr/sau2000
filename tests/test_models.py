@@ -14,13 +14,19 @@ SAUS = [
         'sex': 'f',
         'ear_tag': '2608',
         'ear_tag_color': 'r',
+        'quality': 'e+',
     },
     {
         'name': 'rambo',
         'birth_date_utc': datetime.now(),
         'sex': 'm',
+        'quality': 'p-',
     },
 ]
+
+
+def get_sheep(names):
+    return [Sheep.objects.get(name=n) for n in names]
 
 
 class SheepTestcase(TestCase):
@@ -48,8 +54,7 @@ class SheepTestcase(TestCase):
         self.assertTrue(sau.alive)
 
     def test_parenthood(self):
-        lr = ('lolcakes', 'rambo')
-        l, r = [Sheep.objects.get(name=n) for n in lr]
+        l, r = get_sheep(('lolcakes', 'rambo'))
         self.assertIsNone(l.father)
         self.assertIsNone(l.mother)
         self.assertIsNone(r.father)
@@ -66,3 +71,9 @@ class SheepTestcase(TestCase):
         ram.save()
         self.assertEqual(l, ram.mother)
         self.assertEqual(r, ram.father)
+
+    def test_qualities(self):
+        l, r, b = get_sheep(('lolcakes', 'rambo', 'britanna'))
+        self.assertEqual('e+', l.quality)
+        self.assertEqual('p-', r.quality)
+        self.assertEqual('', b.quality)
