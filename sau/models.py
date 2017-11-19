@@ -48,3 +48,29 @@ class Sheep(models.Model):
     @property
     def colored_tag(self):
         return self.ear_tag_color, self.ear_tag
+
+    def _the_parent(self, gender):
+        if gender == 'f':
+            p = self.mother.all()
+        elif gender == 'm':
+            p = self.father.all()
+        else:
+            raise ValueError('Parent must be "f/m", not %s' % str(gender))
+
+        if len(p) == 0:
+            return None
+        if len(p) == 1:
+            return p[0]
+        raise RuntimeError('Several fathers/mothers for %s' % str(self.name))
+
+
+    @property
+    def the_father(self):
+        return self._the_parent(gender='m')
+
+    @property
+    def the_mother(self):
+        return self._the_parent(gender='f')
+
+    def __repr__(self):
+        return 'Sheep(name=%s)' % self.name
