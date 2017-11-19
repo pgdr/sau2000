@@ -5,9 +5,9 @@ python:
 after_success:
 - if [ "$TRAVIS_BRANCH" == "docker" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" 94.130.98.112:5000;
-    docker build -t sau2000 .;
-    ocker tag sau2000 94.130.98.112:5000/sau/sau2000;
-    docker push 94.130.98.112:5000/sau/sau2000;
+    docker build -t sau2000:latest .;
+    docker tag sau2000:latest 94.130.98.112:5000/sau2000:latest;
+    docker push 94.130.98.112:5000/sau2000:latest;
     fi
 
 install:
