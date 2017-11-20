@@ -47,3 +47,9 @@ def get_all_sheep():
 def index(request):
     sheep = get_all_sheep()
     return TemplateResponse(request, 'index.html', context={'sheep': sheep})
+
+
+def sau(request):
+    name =  request.path_info.split('/')[-1]
+    sheep = Sheep.objects.get(name=name)
+    return TemplateResponse(request, 'sau.html', context={'sheep': sheep})
