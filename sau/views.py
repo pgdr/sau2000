@@ -3,8 +3,7 @@ from __future__ import unicode_literals
 from datetime import datetime
 
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.http import JsonResponse
+from django.template.response import TemplateResponse
 
 from sau.models import Sheep
 
@@ -45,21 +44,6 @@ def get_all_sheep():
     return a
 
 
-def html(tag, content):
-    return '<{tag}>\n\t{content}\n</{tag}>'.format(tag=tag, content=content)
-
-
-def ul(lst, ordering='ul'):
-    li = lambda x: html('li', x)
-    return html(ordering, ''.join(map(li, lst)))
-
-
 def index(request):
     sheep = get_all_sheep()
-    names = [s.name for s in sheep]
-
-    content = html('h1', 'Sau2000')
-    content += ul(names)
-    content += html('p', 'the end.')
-
-    return HttpResponse(content)
+    return TemplateResponse(request, 'index.html', context={'sheep': sheep})
