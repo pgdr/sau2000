@@ -3,11 +3,12 @@ sudo: required
 python:
 - '2.7'
 after_success:
-- docker login -u "$docker_username" -p "$docker_password"
-- docker build -t sau2000:initial .;
-- docker tag sau2000:initial sau2000/sau2000:latest;
-- docker push sau2000/sau2000:latest;
-# - if [ "$TRAVIS_BRANCH" == "docker" ]; then
+- if [ "$TRAVIS_BRANCH" == "docker" ]; then
+  docker login -u "$docker_username" -p "$docker_password"
+  docker build -t sau2000:initial .;
+  docker tag sau2000:initial sau2000/sau2000:latest;
+  docker push sau2000/sau2000:latest;
+  fi
 #     docker login -u "$docker_username" -p "$docker_password";
 #     docker build -t sau2000:initial .;
 #     docker tag sau2000:initial sau2000/sau2000:latest;
