@@ -30,6 +30,12 @@ COLOR = (
 )
 
 
+def _children(parent):
+    for sheep in Sheep.objects.all():
+        if parent in (sheep.mother, sheep.father):
+            yield sheep
+
+
 
 class Sheep(models.Model):
     name = models.CharField(max_length=100)
@@ -54,15 +60,17 @@ class Sheep(models.Model):
         null=True,
         blank=True,
         on_delete=models.PROTECT)
-    end = models.DateTimeField(
-        'born', null=True, blank=True, auto_now_add=False)
+    dead = models.DateTimeField(
+        'death', null=True, blank=True, auto_now_add=False)
+    removed = models.DateTimeField(
+        'removed', null=True, blank=True, auto_now_add=False)
     origin = models.TextField(blank=True)
     comments = models.TextField(blank=True)
 
 
     @property
     def alive(self):
-        return not self.end
+        return not self.dead and not self.removed
 
     @property
     def age(self):
@@ -74,6 +82,25 @@ class Sheep(models.Model):
     @property
     def colored_tag(self):
         return self.ear_tag_color, self.ear_tag
+
+    @property
+    def children(self):
+        return list(_children(self))
+
+    @property
+    def children_tree(self):
+        seen = set()
+        queue = [self]
+        res = set()
+        while queue:
+            n = queue.pop()
+            cn = _children(n)
+            for s in cn:
+                res.add(s)
+                if s not in seen:
+                    seen.add(s)
+                    queue.add(s)
+        return res
 
     def __repr__(self):
         return 'Sheep(name=%s)' % self.name

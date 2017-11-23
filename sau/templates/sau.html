@@ -33,6 +33,15 @@
       <dt>Comments</dt>
       <dd><p>{{ sheep.comments }}</p></dd>
 
+      <dt>Children</dt>
+      <dd>
+        <ul>
+          {% for s in sheep.children %}
+          <li><a href="/sau/sau/{{ s.name }}">{{ s.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </dd>
+
     </dl>
   </body>
 </html>
