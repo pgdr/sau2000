@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from datetime import datetime as dt
 
 from django.db import models
-
+from .utils import utc
 
 QUALITIES = (
     ('e', 'E'), ('e-', 'E-'), ('e+', 'E+'),
@@ -53,13 +54,22 @@ class Sheep(models.Model):
         null=True,
         blank=True,
         on_delete=models.PROTECT)
+    end = models.DateTimeField(
+        'born', null=True, blank=True, auto_now_add=False)
     origin = models.TextField(blank=True)
     comments = models.TextField(blank=True)
 
 
     @property
     def alive(self):
-        return not self.quality
+        return not self.end
+
+    @property
+    def age(self):
+        bd = self.birth_date_utc
+        if not bd:
+            return None
+        return dt.now(utc) - bd
 
     @property
     def colored_tag(self):

@@ -9,10 +9,30 @@
     <h1>Looking at {{ sheep.name }}</h1>
 
     <dl>
+      <dt>Name</dt>
+      <dd>{{ sheep.name }}</dd>
+
       <dt>Ear tag</dt>
-      <dd>{{ sheep.colored_tag }}</dd>
+      <dd>{{ sheep.ear_tag }} {{ sheep.get_ear_tag_color_display }}</dd>
+
+      <dt>Born</dt>
+      <dd>{{ sheep.birth_date_utc }} (age: {{ sheep.age }})</dd>
+
+      <dt>Mother</dt>
+      <dd><a href="/sau/sau/{{sheep.mother}}"> {{sheep.mother}} </a></dd>
+
+      <dt>Father</dt>
+      <dd><a href="/sau/sau/{{sheep.father}}"> {{sheep.father}} </a></dd>
+
       <dt>Gender</dt>
-      <dd>{{ sheep.sex }}</dd>
+      <dd>{{ sheep.get_sex_display }}</dd>
+
+      <dt>Origin</dt>
+      <dd><p>{{ sheep.origin }}</p></dd>
+
+      <dt>Comments</dt>
+      <dd><p>{{ sheep.comments }}</p></dd>
+
     </dl>
   </body>
 </html>
