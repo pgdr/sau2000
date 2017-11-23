@@ -1,0 +1,7 @@
+body {
+    background-color: #fefefe;
+    font-family: sans-serif;
+}
+h1:after {
+    content: "🐑";
+}

@@ -1,17 +1,19 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title>Sau2000</title>
+    <link href="{% static "css/base.css" %}" rel="stylesheet" type="text/css">
   </head>
   <body>
-
-    <h1>Sau2000</h1>
-
-    <ul>
-      {% for s in sheep %}
-      <li><a href="sau/{{ s.name }}">{{ s.name }}</a></li>
-      {% endfor %}
-    </ul>
+    {% block content %}
+      <h1>Sau2000</h1>
+      <ul>
+        {% for s in sheep %}
+        <li><a href="sau/{{ s.name }}">{{ s.name }}</a></li>
+        {% endfor %}
+      </ul>
+    {% endblock %}
   </body>
 </html>
