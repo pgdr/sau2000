@@ -10,7 +10,7 @@ COPY run.sh /run.sh
 
 EXPOSE 8000
 
-ENV PYTHONPATH /app
+ENV PYTHONPATH /app:/configs
 ENV DJANGO_SETTINGS_MODULE sausite.settings
 
 CMD ["/run.sh"]
