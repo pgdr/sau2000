@@ -1,8 +1,19 @@
 language: python
+sudo: required
 python:
 - '2.7'
+after_success:
+- if [ "$TRAVIS_BRANCH" == "master" ]; then
+  docker login -u "$docker_username" -p "$docker_password";
+  docker build -t sau2000:initial .;
+  docker tag sau2000:initial sau2000/sau2000:latest;
+  docker push sau2000/sau2000:latest;
+  fi
+
 install:
 - pip install -r requirements.txt
 script:
 - ./manage.py migrate
 - ./manage.py test
+services:
+- docker
