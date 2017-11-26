@@ -20,7 +20,7 @@
       </tr>
       {% for s in sheep %}
       <tr>
-        <td>{{ s.ear_tag }} {{ s.get_ear_tag_color_display }}</td>
+        <td>{% include "earmark.html" with number=s.ear_tag color=s.ear_tag_color %}</td>
         <td><a href="sau/{{ s.name }}">{{ s.name }}</a></td>
         <td><a href="/sau/sau/{{s.mother}}"> {{s.mother}} </td>
         <td><a href="/sau/sau/{{s.father}}"> {{s.father}} </td>
