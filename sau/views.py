@@ -5,7 +5,7 @@ from datetime import datetime
 from django.shortcuts import render
 from django.template.response import TemplateResponse
 
-from sau.models import Sheep
+from sau.models import Sheep, Dose
 
 SAUS = [
     {
@@ -52,4 +52,6 @@ def index(request):
 def sau(request):
     name =  request.path_info.split('/')[-1]
     sheep = Sheep.objects.get(name=name)
-    return TemplateResponse(request, 'sau.html', context={'sheep': sheep})
+    doses = Dose.get(sheep=sheep)
+    return TemplateResponse(request, 'sau.html', context={'sheep': sheep,
+                                                          'doses': doses})

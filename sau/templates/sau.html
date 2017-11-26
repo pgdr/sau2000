@@ -36,5 +36,23 @@
     </ul>
   </dd>
 
+  <dt>Doses</dt>
+  <dd>
+    <table class="pure-table">
+      <tr>
+        <th>Dato</th>
+        <th>Medisin</th>
+        <th>Mengde</th>
+      </tr>
+      {% for d in doses %}
+      <tr>
+        <td>{{ d.date_utc }}</td>
+        <td>{{ d.medicine.name }}</td>
+        <td>{{ d.amount }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </dd>
+
 </dl>
 {% endblock %}

@@ -131,3 +131,7 @@ class Dose(models.Model):
     def __str__(self):
         return 'Dose(%s -> %s [%.2f])' % (repr(self.medicine),
                                           repr(self.sheep), self.amount)
+
+    @classmethod
+    def get(cls, **kwargs):
+        return Dose.objects.all().filter(**kwargs).order_by('-date_utc')
