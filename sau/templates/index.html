@@ -8,12 +8,25 @@
   </head>
   <body>
     {% block content %}
-      <h1>Sau2000</h1>
-      <ul>
-        {% for s in sheep %}
-        <li><a href="sau/{{ s.name }}">{{ s.name }}</a></li>
-        {% endfor %}
-      </ul>
+    <h1>Sau2000</h1>
+    <table>
+      <tr>
+        <th>&Oslash;re</th>
+        <th>Navn</th>
+        <th>Mor</th>
+        <th>Far</th>
+        <th>Kj&oslash;nn</th>
+      </tr>
+      {% for s in sheep %}
+      <tr>
+        <td>{{ s.ear_tag }} {{ s.get_ear_tag_color_display }}</td>
+        <td><a href="sau/{{ s.name }}">{{ s.name }}</a></td>
+        <td><a href="/sau/sau/{{s.mother}}"> {{s.mother}} </td>
+        <td><a href="/sau/sau/{{s.father}}"> {{s.father}} </td>
+        <td>{{ s.get_sex_display }}</td>
+      </tr>
+      {% endfor %}
+    </table>
     {% endblock %}
   </body>
 </html>
