@@ -5,3 +5,60 @@ body {
 h1:after {
     content: "🐑";
 }
+
+.earmark {
+    display: inline-block;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.earmark-number {
+    text-align: center;
+    font-family: monospace;
+    font-size: 1.3em;
+}
+
+.earmark-r /* Red */ {
+    background-color: red;
+    color: white;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.earmark-w /* White */ {
+    color: #333;
+}
+
+.earmark-y /* Yellow */ {
+    background-color: yellow;
+    color: black;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+    border: 1px solid rgba(255, 184, 0, 0.5);
+}
+
+.earmark-g /* Green */ {
+    background-color: green;
+    color: white;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.earmark-b /* Blue */ {
+    background-color: blue;
+    color: white;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.earmark-a /* Gray */ {
+    background-color: gray;
+    color: white;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.earmark-c /* Cyan */ {
+    background-color: cyan;
+    color: black;
+}
+
+.earmark-k /* Black */ {
+    background-color: black;
+    color: white;
+}
