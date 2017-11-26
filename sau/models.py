@@ -107,3 +107,27 @@ class Sheep(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+
+class Medicine(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return '%s (%s)' % (self.name, self.description)
+
+    def __repr__(self):
+        return 'Medicine(%s)' % str(self)
+
+
+class Dose(models.Model):
+    """One Dose is some amount (millilitres) of Medicine given to a Sheep."""
+    medicine = models.ForeignKey('Medicine', on_delete=models.PROTECT)
+    sheep = models.ForeignKey('Sheep', on_delete=models.PROTECT)
+    amount = models.FloatField(default=25)
+    date_utc = models.DateTimeField(
+        'given', null=True, blank=True, auto_now_add=False)
+
+    def __str__(self):
+        return 'Dose(%s -> %s [%.2f])' % (repr(self.medicine),
+                                          repr(self.sheep), self.amount)
