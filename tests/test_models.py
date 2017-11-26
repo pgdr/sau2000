@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.test import TestCase
-from sau.models import Sheep
+from sau.models import Sheep, Medicine, Dose
 
 SAUS = [
     {
@@ -77,3 +77,32 @@ class SheepTestcase(TestCase):
         self.assertEqual('e+', l.quality)
         self.assertEqual('p-', r.quality)
         self.assertEqual('', b.quality)
+
+
+class MedicineTestcase(TestCase):
+    def _init_saus(self):
+        for sau in SAUS:
+            s = Sheep.objects.create(**sau)
+            s.save()
+
+    def setUp(self):
+        self._init_saus()
+        self.l, self.r = get_sheep(('lolcakes', 'rambo'))
+
+        self.med = Medicine.objects.create(
+            name='Paracit', description='For headaches or headcakes')
+        self.med.save()
+        self.dose = Dose.objects.create(
+            medicine=self.med, sheep=self.l, amount=200)
+        self.dose = Dose.objects.create(
+            medicine=self.med, sheep=self.r, amount=250)
+        self.dose.save()
+
+    def test_dose(self):
+        self.assertEqual(2, len(Dose.objects.all()))
+        self.assertEqual(1, len(Medicine.objects.all()))
+
+        dr = Dose.objects.get(sheep=self.r)
+        self.assertEqual(250, dr.amount)
+        dl = Dose.objects.get(sheep=self.l)
+        self.assertEqual(200, dl.amount)
