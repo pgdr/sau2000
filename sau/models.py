@@ -99,7 +99,7 @@ class Sheep(models.Model):
                 res.add(s)
                 if s not in seen:
                     seen.add(s)
-                    queue.add(s)
+                    queue.append(s)
         return res
 
     def __repr__(self):

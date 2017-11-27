@@ -1,16 +1,19 @@
-from datetime import datetime
+from datetime import datetime as dt
 from django.test import TestCase
 from sau.models import Sheep, Medicine, Dose
+
+def date(y=2010, m=1, d=1, h=6, min_=0, sec=0):
+    return dt(y, m, d, h, min_, sec)
 
 SAUS = [
     {
         'name': 'britanna',
-        'birth_date_utc': datetime.now(),
+        'birth_date_utc': date(),
         'sex': 'f',
     },
     {
         'name': 'lolcakes',
-        'birth_date_utc': datetime.now(),
+        'birth_date_utc': date(),
         'sex': 'f',
         'ear_tag': '2608',
         'ear_tag_color': 'r',
@@ -18,22 +21,92 @@ SAUS = [
     },
     {
         'name': 'rambo',
-        'birth_date_utc': datetime.now(),
+        'birth_date_utc': date(),
         'sex': 'm',
         'quality': 'p-',
     },
+    {
+        'name': 'rb_a',
+        'birth_date_utc': date(2012),
+        'sex': 'm',
+        'quality': 'r',
+        'weight': 1000,
+        'fat_percentage': 0.8,
+    },
+    {
+        'name': 'rb_b',
+        'birth_date_utc': date(2012),
+        'sex': 'm',
+        'quality': 'u',
+        'weight': 1100,
+        'fat_percentage': 0.8,
+    },
+    {
+        'name': 'rb_c',
+        'birth_date_utc': date(2012),
+        'sex': 'f',
+        'quality': 'e',
+        'weight': 1200,
+        'fat_percentage': 0.8,
+    },
+    {
+        'name': 'rb_c_a',
+        'birth_date_utc': date(2013),
+        'sex': 'm',
+        'quality': 'r',
+        'weight': 600,
+        'fat_percentage': 0.2,
+    },
+    {
+        'name': 'rb_c_b',
+        'birth_date_utc': date(2013),
+        'sex': 'm',
+        'quality': 'u',
+        'weight': 700,
+        'fat_percentage': 0.3,
+    },
+    {
+        'name': 'rb_c_c',
+        'birth_date_utc': date(2013),
+        'sex': 'm',
+        'quality': 'e',
+        'weight': 800,
+        'fat_percentage': 0.4,
+    },
 ]
 
+
+def generate_sheep_db():
+    for sau in SAUS:
+        s = Sheep.objects.create(**sau)
+        s.save()
+    r,b = get_sheep(['rambo','britanna'])
+    rb_a = Sheep.objects.get(name='rb_a')
+    rb_b = Sheep.objects.get(name='rb_b')
+    rb_c = Sheep.objects.get(name='rb_c')
+    for s in (rb_a, rb_b, rb_c):
+        s.father = r
+        s.mother = b
+        s.save()
+    rb_c_a = Sheep.objects.get(name='rb_c_a')
+    rb_c_b = Sheep.objects.get(name='rb_c_b')
+    rb_c_c = Sheep.objects.get(name='rb_c_c')
+    for s in (rb_c_a, rb_c_b, rb_c_c):
+        s.father = r
+        s.mother = rb_c
+        s.save()
 
 def get_sheep(names):
     return [Sheep.objects.get(name=n) for n in names]
 
 
 class SheepTestcase(TestCase):
+
     def setUp(self):
-        for sau in SAUS:
-            s = Sheep.objects.create(**sau)
-            s.save()
+        generate_sheep_db()
+
+    def test__self_setup(self):
+        self.assertEqual(9, len(Sheep.objects.all()))
 
     def test_sheep_name(self):
         sau = Sheep.objects.get(name='britanna')
@@ -62,7 +135,7 @@ class SheepTestcase(TestCase):
 
         ram = Sheep.objects.create(
             name='boy',
-            birth_date_utc=datetime.now(),
+            birth_date_utc=dt.now(),
         )
 
         ram.save()
@@ -77,6 +150,18 @@ class SheepTestcase(TestCase):
         self.assertEqual('e+', l.quality)
         self.assertEqual('p-', r.quality)
         self.assertEqual('', b.quality)
+
+    def test_children(self):
+        l, r, b = get_sheep(('lolcakes', 'rambo', 'britanna'))
+        self.assertEqual(0, len(l.children))
+        self.assertEqual(0, len(l.children_tree))
+
+        self.assertEqual(6, len(r.children))
+        self.assertEqual(6, len(r.children_tree))
+
+        self.assertEqual(3, len(b.children))
+        self.assertEqual(6, len(b.children_tree))
+
 
 
 class MedicineTestcase(TestCase):
