@@ -4,6 +4,7 @@ from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
+from django.shortcuts import redirect, get_object_or_404
 
 from sau.models import Sheep, Dose
 
@@ -51,9 +52,8 @@ def index(request):
 
 
 @login_required
-def sau(request):
-    name = request.path_info.split('/')[-1]
-    sheep = Sheep.objects.get(name=name)
+def sau(request, slug=""):
+    sheep = get_object_or_404(Sheep, slug=slug)
     doses = Dose.get(sheep=sheep)
     return TemplateResponse(request, 'sau.html', context={'sheep': sheep,
                                                           'doses': doses})

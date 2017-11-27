@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from datetime import datetime as dt
 
 from django.db import models
+from django.template.defaultfilters import slugify
+
 from .utils import utc
 
 QUALITIES = (
@@ -36,9 +38,9 @@ def _children(parent):
             yield sheep
 
 
-
 class Sheep(models.Model):
     name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=40, blank=True, editable=False)
     ear_tag = models.CharField(max_length=30, blank=True)
     ear_tag_color = models.CharField(max_length=1, choices=COLOR, default='w')
     birth_date_utc = models.DateTimeField(
@@ -66,7 +68,6 @@ class Sheep(models.Model):
         'removed', null=True, blank=True, auto_now_add=False)
     origin = models.TextField(blank=True)
     comments = models.TextField(blank=True)
-
 
     @property
     def alive(self):
@@ -107,6 +108,10 @@ class Sheep(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Sheep, self).save(*args, **kwargs)
 
 
 class Medicine(models.Model):

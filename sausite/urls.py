@@ -18,6 +18,6 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^sau/', include('sau.urls')),
+    url(r'^', include('sau.urls')),
     url(r'^admin/', admin.site.urls),
 ]
