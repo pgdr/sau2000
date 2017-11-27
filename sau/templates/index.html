@@ -21,9 +21,17 @@
       {% for s in sheep %}
       <tr>
         <td>{% include "earmark.html" with number=s.ear_tag color=s.ear_tag_color %}</td>
-        <td><a href="sau/{{ s.name }}">{{ s.name }}</a></td>
-        <td><a href="/sau/sau/{{s.mother}}"> {{s.mother}} </td>
-        <td><a href="/sau/sau/{{s.father}}"> {{s.father}} </td>
+        <td><a href="sau/{{ s.slug }}">{{ s.name }}</a></td>
+        {% if s.mother %}
+        <td><a href="sau/{{s.mother.slug}}"> {{s.mother}} </td>
+        {% else %}
+        <td>N/a</td>
+        {% endif %}
+        <td><a href="sau/{{s.father.slug }}"> {{s.father}} </td>
+        {% if s.father %}
+        {% else %}
+        <td>N/a</td>
+        {% endif %}
         <td>{{ s.get_sex_display }}</td>
       </tr>
       {% endfor %}

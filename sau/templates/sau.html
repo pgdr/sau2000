@@ -12,11 +12,15 @@
   <dt>Born</dt>
   <dd>{{ sheep.birth_date_utc }} (age: {{ sheep.age }})</dd>
 
+  {% if sheep.mother %}
   <dt>Mother</dt>
-  <dd><a href="/sau/sau/{{sheep.mother}}"> {{sheep.mother}} </a></dd>
+  <dd><a href="/sau/{{sheep.mother.slug}}"> {{sheep.mother}} </a></dd>
+  {% endif %}
 
+  {% if sheep.father %}
   <dt>Father</dt>
-  <dd><a href="/sau/sau/{{sheep.father}}"> {{sheep.father}} </a></dd>
+  <dd><a href="/sau/{{sheep.father.slug }}"> {{sheep.father}} </a></dd>
+  {% endif %}
 
   <dt>Gender</dt>
   <dd>{{ sheep.get_sex_display }}</dd>
@@ -31,7 +35,7 @@
   <dd>
     <ul>
       {% for s in sheep.children %}
-      <li><a href="/sau/sau/{{ s.name }}">{{ s.name }}</a></li>
+      <li><a href="/sau/{{ s.slug }}">{{ s.name }}</a></li>
       {% endfor %}
     </ul>
   </dd>
