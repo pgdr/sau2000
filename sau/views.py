@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from datetime import datetime
 
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
 
 from sau.models import Sheep, Dose
@@ -44,13 +44,15 @@ def get_all_sheep():
     return a
 
 
+@login_required
 def index(request):
     sheep = get_all_sheep()
     return TemplateResponse(request, 'index.html', context={'sheep': sheep})
 
 
+@login_required
 def sau(request):
-    name =  request.path_info.split('/')[-1]
+    name = request.path_info.split('/')[-1]
     sheep = Sheep.objects.get(name=name)
     doses = Dose.get(sheep=sheep)
     return TemplateResponse(request, 'sau.html', context={'sheep': sheep,
