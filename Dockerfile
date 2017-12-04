@@ -1,7 +1,7 @@
-FROM python:2
+FROM python:3
 
 COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN pip3 install --no-cache-dir -r /app/requirements.txt
 RUN apt-get update && apt-get install -y \
   nginx
 
