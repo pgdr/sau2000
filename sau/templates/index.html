@@ -6,36 +6,52 @@
     <title>Sau2000</title>
     <link href="{% static "css/pure-min.css" %}" rel="stylesheet" type="text/css">
     <link href="{% static "css/sau.css" %}" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet">
   </head>
   <body>
-    {% block content %}
-    <h1>Sau2000</h1>
-    <table class="pure-table">
-      <tr>
-        <th>&Oslash;re</th>
-        <th>Navn</th>
-        <th>Mor</th>
-        <th>Far</th>
-        <th>Kj&oslash;nn</th>
-      </tr>
-      {% for s in sheep %}
-      <tr>
-        <td>{% include "earmark.html" with number=s.ear_tag color=s.ear_tag_color %}</td>
-        <td><a href="sau/{{ s.slug }}">{{ s.name }}</a></td>
-        {% if s.mother %}
-        <td><a href="sau/{{s.mother.slug}}"> {{s.mother}} </td>
-        {% else %}
-        <td>N/a</td>
-        {% endif %}
-        {% if s.father %}
-        <td><a href="sau/{{s.father.slug }}"> {{s.father}} </td>
-        {% else %}
-        <td>N/a</td>
-        {% endif %}
-        <td>{{ s.get_sex_display }}</td>
-      </tr>
-      {% endfor %}
-    </table>
+    {% block top_bar %}
+    <div class="status">
+      <div class="inner-status">
+        <h1 class="page-title">{% block page_title %}<a href="{% url 'index' %}">Sau2000</a>{% endblock %}</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'index' %}">Hjem</a></li>
+          {% block breadcrumb %}
+          {% endblock %}
+        </ul>
+        <p class="auth">Hei, <a href="{% url 'admin:index' %}">{{ request.user.username }}</a>. <a href="{% url 'admin:logout' %}">Logg ut</a></p>
+      </div>
+    </div>
     {% endblock %}
+    <div class="content">
+      {% block content %}
+      <table class="pure-table">
+        <tr>
+          <th>&Oslash;re</th>
+          <th>Navn</th>
+          <th>Mor</th>
+          <th>Far</th>
+          <th>Kj&oslash;nn</th>
+        </tr>
+        {% for s in sheep %}
+        <tr>
+          <td>{% include "earmark.html" with number=s.ear_tag color=s.ear_tag_color %}</td>
+          <td><a href="sau/{{ s.slug }}">{{ s.name }}</a></td>
+          {% if s.mother %}
+          <td><a href="sau/{{s.mother.slug}}">{{s.mother}}</a></td>
+          {% else %}
+          <td class="n-a">N/a</td>
+          {% endif %}
+          {% if s.father %}
+          <td><a href="sau/{{s.father.slug }}">{{s.father}}</a></td>
+          {% else %}
+          <td class="n-a">N/a</td>
+          {% endif %}
+          <td>{{ s.get_sex_display }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% endblock %}
+    </div>
   </body>
 </html>
