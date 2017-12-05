@@ -1,63 +1,114 @@
 {% extends 'index.html' %}
 {% load humanize %}
+
+{% block breadcrumb %}
+<li><span>Sau</span></li>
+<li><span>{{ sheep.name }}</span></li>
+{% endblock %}
+
 {% block content %}
-<h1>Looking at {{ sheep.name }}</h1>
+<h2>{{ sheep.name }} {% include "earmark.html" with number=sheep.ear_tag color=sheep.ear_tag_color %}</h2>
 
-<dl>
-  <dt>Name</dt>
-  <dd>{{ sheep.name }}</dd>
 
-  <dt>Ear tag</dt>
-  <dd>{{ sheep.ear_tag }} {{ sheep.get_ear_tag_color_display }}</dd>
+<div class="sau-section">
+  <p class="sau-section-header">Administration</p>
+  <ul>
+    <li>
+      <p class="sau-definition">Details</p>
+      <p class="sau-data"><a href="{% url 'admin:sau_sheep_change' sheep.id %}">Edit Sheep</a></p>
+    </li>
+    <li>
+      <p class="sau-definition">Deletion</p>
+      <p class="sau-data"><a href="{% url 'admin:sau_sheep_delete' sheep.id %}">Delete Sheep</a></p>
+    </li>
 
-  <dt>Born</dt>
-  <dd>{{ sheep.birth_date_utc }} (age: {{ sheep.birth_date_utc | timesince }})</dd>
+  </ul>
+</div>
 
-  {% if sheep.mother %}
-  <dt>Mother</dt>
-  <dd><a href="/sau/{{sheep.mother.slug}}"> {{sheep.mother}} </a></dd>
-  {% endif %}
+<div class="sau-section">
+  <p class="sau-section-header">Background</p>
+  <ul>
 
-  {% if sheep.father %}
-  <dt>Father</dt>
-  <dd><a href="/sau/{{sheep.father.slug }}"> {{sheep.father}} </a></dd>
-  {% endif %}
+    <li>
+      <p class="sau-definition">Born</p>
+      <p class="sau-data">{{ sheep.birth_date_utc }} (age: {{ sheep.birth_date_utc | timesince }})</p>
+    </li>
 
-  <dt>Gender</dt>
-  <dd>{{ sheep.get_sex_display }}</dd>
+    {% if sheep.mother %}
+    <li>
+      <p class="sau-definition">Mother</p>
+      <p class="sau-data"><a href="/sau/{{sheep.mother.slug}}">{{sheep.mother}}</a></p>
+    </li>
+    {% endif %}
 
-  <dt>Origin</dt>
-  <dd><p>{{ sheep.origin }}</p></dd>
+    {% if sheep.father %}
+    <li>
+      <p class="sau-definition">Father</p>
+      <p class="sau-data"><a href="/sau/{{sheep.father.slug }}"> {{sheep.father}} </a></p>
+    </li>
+    {% endif %}
 
-  <dt>Comments</dt>
-  <dd><p>{{ sheep.comments }}</p></dd>
+    {% if sheep.origin %}
+    <li>
+      <p class="sau-definition">Origin</p>
+      <p class="sau-data">{{ sheep.origin }}</p>
+    </li>
+    {% endif %}
 
-  <dt>Children</dt>
-  <dd>
-    <ul>
-      {% for s in sheep.children %}
-      <li><a href="/sau/{{ s.slug }}">{{ s.name }}</a></li>
-      {% endfor %}
-    </ul>
-  </dd>
+  </ul>
+</div>
 
-  <dt>Doses</dt>
-  <dd>
-    <table class="pure-table">
-      <tr>
-        <th>Dato</th>
-        <th>Medisin</th>
-        <th>Mengde</th>
-      </tr>
-      {% for d in doses %}
-      <tr>
-        <td>{{ d.date_utc }}</td>
-        <td>{{ d.medicine.name }}</td>
-        <td>{{ d.amount }}</td>
-      </tr>
-      {% endfor %}
-    </table>
-  </dd>
+{% if sheep.children %}
+<div class="sau-section">
+  <p class="sau-section-header">Descendants</p>
+  <ul>
+    {% for s in sheep.children %}
+    <li>
+      <p class="sau-definition">{% include "earmark.html" with number=s.ear_tag color=s.ear_tag_color %}</p>
+      <p class="sau-data"><a href="/sau/{{ s.slug }}">{{ s.name }}</a></p>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
 
-</dl>
+{% if doses %}
+<div class="sau-section">
+  <p class="sau-section-header">Medicine</p>
+  <ul>
+    <li>
+      <p class="sau-definition">Doses</p>
+      <div class="sau-data">
+        <table class="pure-table doses-table">
+          <thead>
+            <tr>
+              <th>Dato</th>
+              <th>Medisin</th>
+              <th>Mengde</th>
+            </tr>
+          </thead>
+          {% for d in doses %}
+          <tr>
+            <td>{{ d.date_utc }}</td>
+            <td>{{ d.medicine.name }}</td>
+            <td>{{ d.amount }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </li>
+  </ul>
+</div>
+{% endif %}
+
+<div class="sau-section">
+  <p class="sau-section-header">Other</p>
+  <ul>
+    <li>
+      <p class="sau-definition">Comments</p>
+      <p class="sau-data">{{ sheep.comments|default:"Ingen kommentar" }}</p>
+    </li>
+  </ul>
+</div>
+
 {% endblock %}
