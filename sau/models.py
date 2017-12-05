@@ -74,13 +74,6 @@ class Sheep(models.Model):
         return not self.dead and not self.removed
 
     @property
-    def age(self):
-        bd = self.birth_date_utc
-        if not bd:
-            return None
-        return dt.now(utc) - bd
-
-    @property
     def colored_tag(self):
         return self.ear_tag_color, self.ear_tag
 
