@@ -96,6 +96,7 @@ def generate_sheep_db():
         s.mother = rb_c
         s.save()
 
+
 def get_sheep(names):
     return [Sheep.objects.get(name=n) for n in names]
 
@@ -191,7 +192,6 @@ class MedicineTestcase(TestCase):
         self.assertEqual(250, dr.amount)
         dl = Dose.objects.get(sheep=self.l)
         self.assertEqual(200, dl.amount)
-
 
     def test_sheep_dose(self):
         doses = Dose.get(sheep=self.r)

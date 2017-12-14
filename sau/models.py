@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from datetime import datetime as dt
 
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.contrib.auth import get_user_model
+from django.apps import apps
 
-from .utils import utc
 
 QUALITIES = (
     ('e', 'E'), ('e-', 'E-'), ('e+', 'E+'),
