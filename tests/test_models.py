@@ -1,9 +1,11 @@
 from datetime import datetime as dt
 from django.test import TestCase
-from sau.models import Sheep, Medicine, Dose
+from sau.models import Sheep, Farm, Medicine, Dose
+
 
 def date(y=2010, m=1, d=1, h=6, min_=0, sec=0):
     return dt(y, m, d, h, min_, sec)
+
 
 SAUS = [
     {
@@ -78,9 +80,10 @@ SAUS = [
 
 def generate_sheep_db():
     for sau in SAUS:
+        sau['farm'] = Farm.objects.all()[0]
         s = Sheep.objects.create(**sau)
         s.save()
-    r,b = get_sheep(['rambo','britanna'])
+    r, b = get_sheep(['rambo', 'britanna'])
     rb_a = Sheep.objects.get(name='rb_a')
     rb_b = Sheep.objects.get(name='rb_b')
     rb_c = Sheep.objects.get(name='rb_c')
@@ -136,6 +139,7 @@ class SheepTestcase(TestCase):
 
         ram = Sheep.objects.create(
             name='boy',
+            farm=Farm.objects.all()[0],
             birth_date_utc=dt.now(),
         )
 
@@ -163,11 +167,21 @@ class SheepTestcase(TestCase):
         self.assertEqual(3, len(b.children))
         self.assertEqual(6, len(b.children_tree))
 
+    def test_farm(self):
+        f = Farm.objects.create(name='Flatråker')
+        f.save()
+
+        sau = Sheep.objects.get(name='britanna')
+        sau.farm = f
+        sau.save()
+
+        self.assertEqual(f.name, sau.farm.name)
 
 
 class MedicineTestcase(TestCase):
     def _init_saus(self):
         for sau in SAUS:
+            sau['farm'] = Farm.objects.all()[0]
             s = Sheep.objects.create(**sau)
             s.save()
 

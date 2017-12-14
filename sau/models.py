@@ -38,6 +38,17 @@ def _children(parent):
             yield sheep
 
 
+class Farm(models.Model):
+    name = models.CharField(max_length=256)
+    farmers = models.ManyToManyField(get_user_model())
+
+    def __repr__(self):
+        return 'Farm(name=%s)' % self.name
+
+    def __str__(self):
+        return str(self.name)
+
+
 class Sheep(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=40, blank=True, editable=False)
@@ -68,6 +79,8 @@ class Sheep(models.Model):
         'removed', null=True, blank=True, auto_now_add=False)
     origin = models.TextField(blank=True)
     comments = models.TextField(blank=True)
+    farm = models.ForeignKey('Farm', on_delete=models.PROTECT,
+                             default=None)
 
     @property
     def alive(self):
