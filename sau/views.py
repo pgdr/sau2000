@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
 from django.shortcuts import get_object_or_404
 
-from sau.models import Sheep, Dose
+from sau.models import Sheep, Dose, Farm
 
 SAUS = [
     {
@@ -32,8 +32,10 @@ SAUS = [
 
 
 def __init():
+    f = Farm.objects.create(name='Drange Gård')
+    f.save()
     for sau in SAUS:
-        s = Sheep.objects.create(**sau)
+        s = Sheep.objects.create(**sau, farm=f)
         s.save()
 
 
