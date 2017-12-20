@@ -26,10 +26,13 @@
     <div class="content">
       {% block content %}
       <table class="pure-table">
-        <tr>
-          <th>&Oslash;re</th>
-          <th>Navn</th>
-        </tr>
+        <thead>
+          <tr>
+            <th>&Oslash;re</th>
+            <th>Navn</th>
+          </tr>
+        </thead>
+        <tbody>
         {% for s in sheep %}
         <tr>
           <td>{% include "earmark.html" with number=s.ear_tag color=s.ear_tag_color %}</td>
@@ -52,6 +55,7 @@
           </td>
         </tr>
         {% endfor %}
+        </tbody>
       </table>
       {% endblock %}
     </div>
