@@ -166,6 +166,27 @@ a {
     color: white;
 }
 
+.gender {
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.gender-Ram {
+    background-image: url("/static/img/male.png");
+    min-width: 1em;
+    min-height: 1em;
+}
+.gender-Ewe {
+    background-image: url("/static/img/female.png");
+    min-width: 1em;
+    min-height: 1em;
+}
+.gender-content {
+    /* display: None? */
+}
+
+
 .sau-section {
     border-bottom: 1px solid #9099A2;
     padding: 20px 0 0 150px;
