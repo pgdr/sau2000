@@ -227,3 +227,9 @@ a {
     text-transform: uppercase;
     font-size: 0.9em;
 }
+
+table.responsive {
+    width: 100%;
+    border-collapse: collapse;
+    margin:50px auto;
+}
