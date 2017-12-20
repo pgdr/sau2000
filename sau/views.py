@@ -37,23 +37,29 @@ def __init():
         s.save()
 
 
-def get_all_sheep():
-    a = Sheep.objects.all()
-    if len(a) == 0:
-        __init()
+def get_all_sheep(request):
+    if request.user.is_superuser:
         a = Sheep.objects.all()
-    return a
+        if len(a) == 0:
+            __init()
+            a = Sheep.objects.all()
+        return a
+    return Sheep.objects.all().filter(farm__farmers__in=[request.user])
 
 
 @login_required
 def index(request):
-    sheep = get_all_sheep()
+    sheep = get_all_sheep(request)
     return TemplateResponse(request, 'index.html', context={'sheep': sheep})
 
 
 @login_required
 def sau(request, slug=""):
-    sheep = get_object_or_404(Sheep, slug=slug)
+    if request.user.is_superuser:
+        sheep = get_object_or_404(Sheep, slug=slug)
+    else:
+        sheep = get_object_or_404(Sheep, slug=slug,
+                                  farm__farmers__in=[request.user])
     doses = Dose.get(sheep=sheep)
     return TemplateResponse(request, 'sau.html', context={'sheep': sheep,
                                                           'doses': doses})
