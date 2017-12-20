@@ -32,7 +32,7 @@ SAUS = [
 
 
 def __init():
-    f = Farm.objects.create(name='Drange Gård')
+    f = Farm.objects.all()[0]
     f.save()
     for sau in SAUS:
         s = Sheep.objects.create(**sau, farm=f)
