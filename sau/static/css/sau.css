@@ -173,12 +173,12 @@ a {
     background-position: center;
 }
 .gender-Ram {
-    background-image: url("/static/male.png");
+    background-image: url("/static/img/male.png");
     min-width: 1em;
     min-height: 1em;
 }
 .gender-Ewe {
-    background-image: url("/static/female.png");
+    background-image: url("/static/img/female.png");
     min-width: 1em;
     min-height: 1em;
 }
