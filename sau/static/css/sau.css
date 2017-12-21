@@ -101,10 +101,7 @@ a {
 }
 
 .content h2 .earmark {
-    font-size: 0.5em;
     position: relative;
-    top: -0.3em;
-    margin-left: 1em;
 }
 
 .earmark {
@@ -116,54 +113,38 @@ a {
 .earmark-number {
     text-align: center;
     font-family: monospace;
-    font-size: 1.3em;
-    padding: 0 0 0 0.5em;
 }
 
-.earmark-r /* Red */ {
-    background-color: red;
-    color: white;
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+.earmark-r span /* Red */ {
+    color: red;
 }
 
-.earmark-w /* White */ {
-    color: #333;
-    border: 1px solid #ccc;
+.earmark-w span /* White */ {
+    color: #ccc;
 }
 
-.earmark-y /* Yellow */ {
-    background-color: yellow;
+.earmark-y span /* Yellow */ {
+    color: yellow;
+}
+
+.earmark-g span /* Green */ {
+    color: green;
+}
+
+.earmark-b span /* Blue */ {
+    color: blue;
+}
+
+.earmark-a span /* Gray */ {
+    color: gray;
+}
+
+.earmark-c span /* Cyan */ {
+    color: cyan;
+}
+
+.earmark-k span /* Black */ {
     color: black;
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-    border: 1px solid rgba(255, 184, 0, 0.5);
-}
-
-.earmark-g /* Green */ {
-    background-color: green;
-    color: white;
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-}
-
-.earmark-b /* Blue */ {
-    background-color: blue;
-    color: white;
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-}
-
-.earmark-a /* Gray */ {
-    background-color: gray;
-    color: white;
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-}
-
-.earmark-c /* Cyan */ {
-    background-color: cyan;
-    color: black;
-}
-
-.earmark-k /* Black */ {
-    background-color: black;
-    color: white;
 }
 
 .gender {

@@ -1,3 +1,5 @@
 <div class="earmark earmark-{{ color }}">
-    <div class="earmark-number"> ⛉ {{ number|default:"&lt;ingen&gt;" }}</div>
+    {% if number %}
+    <div class="earmark-number"><span>★</span> {{ number }}</div>
+    {% endif %}
 </div>
