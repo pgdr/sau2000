@@ -139,7 +139,7 @@ def tree(request, slug=''):  # genealogy
     # statistics
     dead = [s for s in subtree if s.dead is not None]
     body_count = len(dead)
-    qs, ql, ws, wl = get_statistics(dead)
+    qs, ql, ws, wl, ls, ll = get_statistics(dead, subtree)
 
     prod_children = [s for s in subtree if s.alive]
     dead_children = [s for s in subtree if s not in prod_children]
@@ -154,4 +154,6 @@ def tree(request, slug=''):  # genealogy
             'quality_labels': ql,
             'weights': ws,
             'weight_labels': wl,
+            'lamb_per_year_lst': ls,
+            'lamb_per_year_labels': ll,
         })
