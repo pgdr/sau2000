@@ -1,126 +1,23 @@
 {% load staticfiles %}
 
 <ul>
-  <li>Dead children: {{ number_dead }}</li>
-  <li>LPY: {{ lamb_per_year_lst }}</li>
-  <li>Qualities: {{ qualities }}</li>
-  <li>Weights: {{ weights }}</li>
+  <li>Dead children: {{ stats.body_count }}</li>
+  <li>Weight stats:
+    <ul>
+      <li>min = {{ stats.weight_min }}</li>
+      <li>avg = {{ stats.weight_avg }}</li>
+      <li>max = {{ stats.weight_max }}</li>
+      <li>std = {{ stats.weight_std }}</li>
+    </ul>
 </ul>
 
 <script src="{% static "js/Chart.bundle.min.js" %}"></script>
 
 <h3>Lambs per year</h3>
-<div class="canvas-container">
-  <canvas id="lpycanvas"></canvas>
-</div>
+{{svgs.lpy|safe}}
 
 <h3>Qualities</h3>
-<div class="canvas-container">
-  <canvas id="qualitiescanvas"></canvas>
-</div>
+{{svgs.quality|safe}}
 
 <h3>Weights</h3>
-<div class="canvas-container">
-  <canvas id="weightscanvas"></canvas>
-</div>
-
-
-<script>
-    var lpy_data = [];
-    var lpy_labels = [];
-    {% for lpy in lamb_per_year_lst %}
-    lpy_data.push( {{lpy}} );
-    {% endfor %}
-    {% for lpy_lab in lamb_per_year_labels %}
-    lpy_labels.push( "{{lpy_lab}}" );
-    {% endfor %}
-
-    var weight_data = [];
-    var weight_labels = [];
-    {% for w in weights %}
-    weight_data.push( {{w}} );
-    {% endfor %}
-    {% for wl in weight_labels %}
-    weight_labels.push( "{{wl}}" );
-    {% endfor %}
-
-    var quality_data = [];
-    var quality_labels = [];
-    {% for q in qualities %}
-    quality_data.push( {{q}} );
-    {% endfor %}
-    {% for ql in quality_labels %}
-    quality_labels.push( "{{ql}}" );
-    {% endfor %}
-
-    window.onload = function() {
-        var qctx = document.getElementById("qualitiescanvas").getContext("2d");
-        window.myBar = new Chart(qctx, {
-            type: 'bar',
-            data: {
-                labels: quality_labels,
-                datasets: [{data: quality_data}],
-            },
-            options: {
-                responsive: true,
-                legend: {
-                    display: false,
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            min: 0,
-                            stepSize: 1
-                        }
-                    }]
-                }
-            }
-        });
-        var wctx = document.getElementById("weightscanvas").getContext("2d");
-        window.myBar = new Chart(wctx, {
-            type: 'bar',
-            data: {
-                labels: weight_labels,
-                datasets: [{data: weight_data}],
-            },
-            options: {
-                responsive: true,
-                legend: {
-                    display: false,
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            min: 0,
-                            stepSize: 1
-                        }
-                    }]
-                }
-            }
-        });
-
-        var lpyctx = document.getElementById("lpycanvas").getContext("2d");
-        window.myBar = new Chart(lpyctx, {
-            type: 'bar',
-            data: {
-                labels: lpy_labels,
-                datasets: [{data: lpy_data}],
-            },
-            options: {
-                responsive: true,
-                legend: {
-                    display: false,
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            min: 0,
-                            stepSize: 1
-                        }
-                    }]
-                }
-            }
-        });
-
-    };
-</script>
+{{svgs.weight|safe}}

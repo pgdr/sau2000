@@ -9,7 +9,7 @@ from django.http import Http404
 
 from sau.models import Sheep, Dose, Farm
 from .forms import DoseForm
-from .statistics import get_statistics
+from .statistics import get_statistics, get_statplots
 
 # SAUS exists solely to populate an empty DB with some stuff.  Will be removed.
 SAUS = [
@@ -59,11 +59,19 @@ def get_all_sheep(request, *, filter_=None):
 
 @login_required
 def index(request):
-    prod_sheep = get_all_sheep(request, filter_={'dead__isnull': True,
-                                                 'removed__isnull': True})
+    prod_sheep = get_all_sheep(
+        request, filter_={
+            'dead__isnull': True,
+            'removed__isnull': True
+        })
     dead_sheep = [s for s in get_all_sheep(request) if s not in prod_sheep]
-    return TemplateResponse(request, 'index.html', context={'prod_sheep': prod_sheep,
-                                                            'dead_sheep': dead_sheep})
+    return TemplateResponse(
+        request,
+        'index.html',
+        context={
+            'prod_sheep': prod_sheep,
+            'dead_sheep': dead_sheep
+        })
 
 
 def _get_sheep_or_404(request, slug):
@@ -78,10 +86,11 @@ def _get_sheep_or_404(request, slug):
 def sau(request, slug=""):
     sheep = _get_sheep_or_404(request, slug)
     doses = Dose.get(sheep=sheep)
+
     return TemplateResponse(
         request, 'sau.html', context={
             'sheep': sheep,
-            'doses': doses
+            'doses': doses,
         })
 
 
@@ -130,7 +139,6 @@ def dose(request, slug=''):
         })
 
 
-
 @login_required
 def tree(request, slug=''):  # genealogy
     current_sheep = _get_sheep_or_404(request, slug)
@@ -138,22 +146,19 @@ def tree(request, slug=''):  # genealogy
 
     # statistics
     dead = [s for s in subtree if s.dead is not None]
-    body_count = len(dead)
-    qs, ql, ws, wl, ls, ll = get_statistics(dead, subtree)
+    svgs = get_statplots(dead, subtree)
+    stat = get_statistics(dead, subtree)
 
     prod_children = [s for s in subtree if s.alive]
     dead_children = [s for s in subtree if s not in prod_children]
 
     return TemplateResponse(
-        request, 'genealogy.html', context={
+        request,
+        'genealogy.html',
+        context={
             'sheep': current_sheep,
             'prod_children': prod_children,
             'dead_children': dead_children,
-            'number_dead': body_count,
-            'qualities': qs,
-            'quality_labels': ql,
-            'weights': ws,
-            'weight_labels': wl,
-            'lamb_per_year_lst': ls,
-            'lamb_per_year_labels': ll,
+            'stats': stat,
+            'svgs': svgs,
         })

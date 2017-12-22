@@ -1,3 +1,5 @@
+numpy
+matplotlib
 dj-database-url>=0.4.1
 Django>=2.0
 gunicorn>=19.6.0
