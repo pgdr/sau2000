@@ -1,0 +1,40 @@
+{% extends 'index.html' %}
+{% load humanize %}
+
+{% block breadcrumb %}
+<li><span>Sau</span></li>
+<li><span>{{ sheep.name }}</span></li>
+{% endblock %}
+
+{% block content %}
+<h2>Genealogy for {{ sheep.name }} </h2>
+
+<div>
+  Parents:
+  <ul>
+    <li>{{ sheep.father }}</li>
+    <li>{{ sheep.mother }}</li>
+  </ul>
+</div>
+
+
+{% block content %}
+<table class="pure-table responsive">
+  <thead>
+    <tr>
+      <th>&Oslash;re</th>
+      <th>Navn</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in descendants %}
+    <tr>
+      <td>{% include "earmark.html" with number=s.ear_tag color=s.ear_tag_color %}</td>
+      <td>{% include "gendered-row.html" with gender=s.get_sex_display %}
+        <a href="sau/{{ s.slug }}">{{ s.name }}</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
