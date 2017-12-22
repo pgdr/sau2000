@@ -208,3 +208,31 @@ a {
     text-transform: uppercase;
     font-size: 0.9em;
 }
+
+/*
+  Pure CSS Responsive Table.
+  A Pen By Andor Nagy
+*/
+table.responsive {
+    width: 100%;
+    border-collapse: collapse;
+    margin:50px auto;
+}
+
+/* Zebra striping */
+table.responsive tr:nth-of-type(odd) {
+    background: #eee;
+}
+
+table.responsive th {
+    background: #3498db;
+    color: white;
+    font-weight: bold;
+}
+
+table.responsive td, table.responsive th {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+    font-size: 18px;
+}
