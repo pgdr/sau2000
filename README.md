@@ -30,7 +30,7 @@ pip install -r requirements.txt
    4. weight
 7. Be able to add Ram with ear mark number and origin
 8. Get statistics for each Sau on number of lambs, quality, fat, weight for
-   all years
+   all years, statistics for lambs per year
 9. Per Sau a list of Medicine, dose, date
 10. Comment field
 
@@ -38,7 +38,5 @@ pip install -r requirements.txt
 ## Future goals
 
 1. Potentially divide sheep into flocks
-2. Get statistics for each Sau on number of lambs, quality, fat, weight per
-   years
-3. More statistics for all Sau per/for all years.
-4. Cause for dose
+2. Get statistics for each Sau on quality, fat, weight per year
+3. Cause for dose
