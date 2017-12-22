@@ -1,0 +1,6 @@
+{% if sheep %}
+<a href="{% url 'sau' sheep.slug %}">{{sheep.name}}</a>
+<a href="{% url 'tree' sheep.slug %}">(↗)</a>
+{% else %}
+N/A
+{% endif %}

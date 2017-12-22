@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{% load humanize %}
+{% block breadcrumb %}
+<li>
+  <span>
+    Tree
+  </span>
+</li>
+<li>
+  <span>
+    {% include "sheep_link.html" with sheep=sheep %}
+  </span>
+</li>
+{% endblock %}
+
+{% block content %}
+<h2>Genealogy for {{ sheep.name }} </h2>
+
+<div>
+  Parents:
+  <ul>
+    <li>{% include "sheep_link.html" with sheep=sheep.father %}</li>
+    <li>{% include "sheep_link.html" with sheep=sheep.mother %}</li>
+  </ul>
+</div>
+
+<div style="width: 50%">
+  {% if number_dead %}
+  {% include "statistics.html" with number_dead=number_dead qualities=qualities %}
+  {% endif %}
+</div>
+
+
+<table class="pure-table responsive">
+  <thead>
+    <tr>
+      <th>&Oslash;re</th>
+      <th>Navn</th>
+    </tr>
+  </thead>
+  <tbody class="dead_sheep">
+    {% include "sheep_row.html" with sheep=prod_children %}
+  </tbody>
+  {% if dead_sheep %}
+  <tr><td colspan=2> out of production </td></tr>
+  <tbody class="dead_sheep">
+    {% include "sheep_row.html" with sheep=dead_children %}
+  </tbody>
+  {% endif %}
+</table>
+{% endblock %}

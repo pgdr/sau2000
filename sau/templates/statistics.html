@@ -1,0 +1,87 @@
+{% load staticfiles %}
+
+<ul>
+  <li>Dead children: {{ number_dead }}</li>
+  <li>Qualities: {{ qualities }}</li>
+  <li>Weights: {{ weights }}</li>
+</ul>
+
+<script src="{% static "js/Chart.bundle.min.js" %}"></script>
+
+<h3>Qualities</h3>
+<div class="canvas-container">
+  <canvas id="qualitiescanvas"></canvas>
+</div>
+
+<h3>Weights</h3>
+<div class="canvas-container">
+  <canvas id="weightscanvas"></canvas>
+</div>
+
+
+<script>
+  var weight_data = [];
+    var weight_labels = [];
+    {% for w in weights %}
+    weight_data.push( {{w}} );
+    {% endfor %}
+    {% for wl in weight_labels %}
+    weight_labels.push( "{{wl}}" );
+    {% endfor %}
+
+    var quality_data = [];
+    var quality_labels = [];
+    {% for q in qualities %}
+    quality_data.push( {{q}} );
+    {% endfor %}
+    {% for ql in quality_labels %}
+    quality_labels.push( "{{ql}}" );
+    {% endfor %}
+
+    window.onload = function() {
+        var qctx = document.getElementById("qualitiescanvas").getContext("2d");
+        window.myBar = new Chart(qctx, {
+            type: 'bar',
+            data: {
+                labels: quality_labels,
+                datasets: [{data: quality_data}],
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            stepSize: 1
+                        }
+                    }]
+                }
+            }
+        });
+        var wctx = document.getElementById("weightscanvas").getContext("2d");
+        window.myBar = new Chart(wctx, {
+            type: 'bar',
+            data: {
+                labels: weight_labels,
+                datasets: [{data: weight_data}],
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            stepSize: 1
+                        }
+                    }]
+                }
+            }
+        });
+    };
+</script>

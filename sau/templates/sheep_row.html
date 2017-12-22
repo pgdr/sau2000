@@ -1,0 +1,8 @@
+{% for s in sheep %}
+<tr>
+  <td>{% include "earmark.html" with number=s.ear_tag color=s.ear_tag_color %}</td>
+  <td>{% include "gendered-row.html" with gender=s.get_sex_display %}
+    {% include "sheep_link.html" with sheep=s %}
+  </td>
+</tr>
+{% endfor %}
