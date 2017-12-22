@@ -124,6 +124,8 @@ class Medicine(models.Model):
     description = models.TextField(blank=True)
 
     def __str__(self):
+        if not self.description:
+            return str(self.name)
         return '%s (%s)' % (self.name, self.description)
 
     def __repr__(self):
