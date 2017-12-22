@@ -34,11 +34,13 @@
         </thead>
         <tbody class="prod_sheep">
         {% include "sheep_row.html" with sheep=prod_sheep %}
+        {% if dead_sheep %}
         </tbody>
         <tr><td colspan=2> out of production </td></tr>
         <tbody class="dead_sheep">
         {% include "sheep_row.html" with sheep=dead_sheep %}
         </tbody>
+        {% endif %}
       </table>
       {% endblock %}
     </div>

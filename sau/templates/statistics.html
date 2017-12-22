@@ -1,0 +1,47 @@
+{% load staticfiles %}
+
+<ul>
+  <li>Dead children: {{ number_dead }}</li>
+  <li>Qualities: {{ qualities }}</li>
+</ul>
+
+<script src="{% static "js/Chart.bundle.min.js" %}"></script>
+
+<div class="canvas-container">
+  <canvas id="canvas"></canvas>
+</div>
+
+<script>
+    var data = [];
+    var labels = [];
+    {% for q in qualities %}
+    data.push( {{q}} );
+    {% endfor %}
+    {% for ql in quality_labels %}
+    labels.push( "{{ql}}" );
+    {% endfor %}
+    window.onload = function() {
+        var ctx = document.getElementById("canvas").getContext("2d");
+        window.myBar = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{data: data}],
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            stepSize: 1
+                        }
+                    }]
+                }
+            }
+        });
+    };
+</script>
