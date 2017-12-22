@@ -7,8 +7,9 @@ from django.template.response import TemplateResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.http import Http404
 
-from sau.models import Sheep, Dose, Farm, QUALITIES
+from sau.models import Sheep, Dose, Farm
 from .forms import DoseForm
+from .statistics import get_statistics
 
 # SAUS exists solely to populate an empty DB with some stuff.  Will be removed.
 SAUS = [
@@ -136,14 +137,9 @@ def tree(request, slug=''):  # genealogy
     subtree = current_sheep.children_tree
 
     # statistics
-    body_count = len([s for s in subtree if s.dead is not None])
-    qualities = [] if not body_count else [s.quality for s in subtree]
-    quality_lst = []
-    quality_labels = []
-    for Q in QUALITIES:
-        # Q = ('e', 'E')
-        quality_lst.append(qualities.count(Q[0]))
-        quality_labels.append(Q[1])
+    dead = [s for s in subtree if s.dead is not None]
+    body_count = len(dead)
+    qs, ql, ws, wl = get_statistics(dead)
 
     prod_children = [s for s in subtree if s.alive]
     dead_children = [s for s in subtree if s not in prod_children]
@@ -154,6 +150,8 @@ def tree(request, slug=''):  # genealogy
             'prod_children': prod_children,
             'dead_children': dead_children,
             'number_dead': body_count,
-            'qualities': quality_lst,
-            'quality_labels': quality_labels,
+            'qualities': qs,
+            'quality_labels': ql,
+            'weights': ws,
+            'weight_labels': wl,
         })
