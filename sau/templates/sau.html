@@ -3,7 +3,8 @@
 
 {% block breadcrumb %}
 <li><span>Sau</span></li>
-<li><span>{{ sheep.name }}</span></li>
+<li><span>    {% include "sheep_link.html" with sheep=sheep %}
+</span></li>
 {% endblock %}
 
 {% block content %}

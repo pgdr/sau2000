@@ -2,8 +2,16 @@
 {% load humanize %}
 
 {% block breadcrumb %}
-<li><span>Sau</span></li>
-<li><span>{{ sheep.name }}</span></li>
+<li>
+  <span>
+    Tree
+  </span>
+</li>
+<li>
+  <span>
+    {% include "sheep_link.html" with sheep=sheep %}
+  </span>
+</li>
 {% endblock %}
 
 {% block content %}
@@ -12,13 +20,20 @@
 <div>
   Parents:
   <ul>
-    <li>{{ sheep.father }}</li>
-    <li>{{ sheep.mother }}</li>
+    <li>{% include "sheep_link.html" with sheep=sheep.father %}</li>
+    <li>{% include "sheep_link.html" with sheep=sheep.mother %}</li>
+  </ul>
+</div>
+
+<div>
+  Statistics:
+  <ul>
+    <li>Dead children: {{ number_dead }}</li>
+    <li>Qualities: {{ qualities }}</li>
   </ul>
 </div>
 
 
-{% block content %}
 <table class="pure-table responsive">
   <thead>
     <tr>
@@ -27,14 +42,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for s in descendants %}
-    <tr>
-      <td>{% include "earmark.html" with number=s.ear_tag color=s.ear_tag_color %}</td>
-      <td>{% include "gendered-row.html" with gender=s.get_sex_display %}
-        <a href="sau/{{ s.slug }}">{{ s.name }}</a>
-      </td>
-    </tr>
-    {% endfor %}
+    {% include "sheep_row.html" with sheep=descendants %}
   </tbody>
 </table>
 {% endblock %}

@@ -127,3 +127,22 @@ def dose(request, slug=''):
             'form': form,
             'sheep': current_sheep
         })
+
+
+
+@login_required
+def tree(request, slug=''):  # genealogy
+    current_sheep = _get_sheep_or_404(request, slug)
+    subtree = current_sheep.children_tree
+
+    # statistics
+    body_count = len([s for s in subtree if s.dead is not None])
+    qualities = '' if not body_count else [s.quality for s in subtree]
+
+    return TemplateResponse(
+        request, 'genealogy.html', context={
+            'sheep': current_sheep,
+            'descendants': subtree,
+            'number_dead': body_count,
+            'qualities': qualities,
+        })

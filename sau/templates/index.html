@@ -33,30 +33,12 @@
           </tr>
         </thead>
         <tbody class="prod_sheep">
-        {% for s in prod_sheep %}
-        <tr>
-          <td>{% include "earmark.html" with number=s.ear_tag color=s.ear_tag_color %}</td>
-          <td>{% include "gendered-row.html" with gender=s.get_sex_display %}
-            <a href="sau/{{ s.slug }}">{{ s.name }}</a>
-          </td>
-        </tr>
-        {% endfor %}
+        {% include "sheep_row.html" with sheep=prod_sheep %}
         </tbody>
-
         <tr><td colspan=2> out of production </td></tr>
-
         <tbody class="dead_sheep">
-        {% for s in dead_sheep %}
-        <tr>
-          <td>{% include "earmark.html" with number=s.ear_tag color=s.ear_tag_color %}</td>
-          <td>{% include "gendered-row.html" with gender=s.get_sex_display %}
-            <a href="sau/{{ s.slug }}">{{ s.name }}</a>
-          </td>
-        </tr>
-        {% endfor %}
+        {% include "sheep_row.html" with sheep=dead_sheep %}
         </tbody>
-
-
       </table>
       {% endblock %}
     </div>
