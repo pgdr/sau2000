@@ -10,7 +10,6 @@ from django.http import Http404
 from sau.models import Sheep, Dose, Farm
 from .forms import DoseForm
 
-
 # SAUS exists solely to populate an empty DB with some stuff.  Will be removed.
 SAUS = [
     {
@@ -107,9 +106,11 @@ def dose(request, slug=''):
             _save_dose(request, slug)
             return redirect('sau', slug=slug)
         else:
-            form = DoseForm(initial={'sheep': current_sheep,
-                                     'date_utc': dt.now(),
-                                     'medicine': request.POST.get('medicine', 1)})
+            form = DoseForm(initial={
+                'sheep': current_sheep,
+                'date_utc': dt.now(),
+                'medicine': request.POST.get('medicine', 1)
+            })
 
     elif request.method == "GET":
         form = DoseForm(initial={'sheep': current_sheep, 'date_utc': dt.now()})
