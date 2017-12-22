@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+{% load humanize %}
+
+{% block breadcrumb %}
+<li><span>Sau</span></li>
+<li><a href="/sau/{{ sheep.slug }}">{{ sheep.name }}</a></li>
+<li><span>Dose</span></li>
+{% endblock %}
+
+{% block content %}
+<h2>Dose for {{ sheep.name }}</h2>
+
+<form class="pure-form pure-form-stacked" method="POST">
+  {% csrf_token %}
+  <fieldset>
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+  </fieldset>
+</form>
+
+
+{% endblock %}
