@@ -16,21 +16,24 @@
 {% block content %}
 <h2>Genealogy for {{ sheep.name }} </h2>
 
-<div>
-  Parents:
-  <ul>
-    <li>{% include "sheep_link.html" with sheep=sheep.father %}</li>
-    <li>{% include "sheep_link.html" with sheep=sheep.mother %}</li>
-  </ul>
-</div>
+<h3>Parents</h3>
+<ul>
+  <li>Father: {% include "sheep_link.html" with sheep=sheep.father %}</li>
+  <li>Mother: {% include "sheep_link.html" with sheep=sheep.mother %}</li>
+</ul>
 
+
+<h3>Summary</h3>
 <div style="width: 50%">
   {% if number_dead %}
   {% include "statistics.html" with number_dead=number_dead qualities=qualities %}
+  {% else %}
+  No dead children.
   {% endif %}
 </div>
 
 
+<h3>Genealogy</h3>
 <table class="pure-table responsive">
   <thead>
     <tr>
