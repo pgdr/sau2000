@@ -17,22 +17,28 @@ pip install -r requirements.txt
 ```
 
 
-## Future goals
-
+## Goals completed
 1. The first rule of Sau is that Sau is all there is
 2. Registered by ear mark number and name
 3. Ability to add new Sau, remove Sau that go out of production
 4. Create production year
-5. For every year, one must be able to add at least 4 rams and for ewes per Sau
+5. For every year, one must be able to add at least 4 rams and 4 ewes per Sau
 6. For each of these lambs, add
-   1. ear mark unmber
+   1. ear mark number
    2. quality (e, u, r, o, p possibly with +/-)
    3. fat percentage
    4. weight
 7. Be able to add Ram with ear mark number and origin
-8. Potentially divide sheep into flocks
-9. Get statistics for each Sau on number of lambs, quality, fat, weight per/for
+8. Get statistics for each Sau on number of lambs, quality, fat, weight for
    all years
-10. More statistics for all Sau per/for all years.
-11. Per Sau a list of Medicine, dose, date, and cause
-12. Comment field
+9. Per Sau a list of Medicine, dose, date
+10. Comment field
+
+
+## Future goals
+
+1. Potentially divide sheep into flocks
+2. Get statistics for each Sau on number of lambs, quality, fat, weight per
+   years
+3. More statistics for all Sau per/for all years.
+4. Cause for dose
