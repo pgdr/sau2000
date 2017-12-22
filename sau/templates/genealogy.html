@@ -3,12 +3,22 @@
 {% block breadcrumb %}
 <li>
   <span>
+    Sau
+  </span>
+</li>
+<li>
+  <span>
+    {% include "sheep_link.html" with tree="no" %}
+  </span>
+</li>
+<li>
+  <span>
     Tree
   </span>
 </li>
 <li>
   <span>
-    {% include "sheep_link.html" with sheep=sheep %}
+    {% include "sheep_link.html" with tree="only" %}
   </span>
 </li>
 {% endblock %}
