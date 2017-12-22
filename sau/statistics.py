@@ -5,7 +5,7 @@ def _weights(sheeps):
     weights = [s.weight for s in sheeps]
     upper = max(weights)
     weight_labels = list(range(0, int(upper + 2), 200))
-    weight_lst = [0 for _ in weight_labels]
+    weight_lst = [0] * len(weight_labels)
     for i, w in enumerate(weight_labels):
         for sw in weights:
             if w < sw <= w + 200:
