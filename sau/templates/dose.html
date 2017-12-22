@@ -3,7 +3,7 @@
 
 {% block breadcrumb %}
 <li><span>Sau</span></li>
-<li><a href="/sau/{{ sheep.slug }}">{{ sheep.name }}</a></li>
+<li><a href="{% url 'sau' sheep.slug %}">{{sheep.name}}</a></li>
 <li><span>Dose</span></li>
 {% endblock %}
 
