@@ -39,20 +39,27 @@ def __init():
         s.save()
 
 
-def get_all_sheep(request):
+def get_all_sheep(request, *, filter_=None):
     if request.user.is_superuser:
         a = Sheep.objects.all()
         if len(a) == 0:
             __init()
             a = Sheep.objects.all()
-        return a
-    return Sheep.objects.all().filter(farm__farmers__in=[request.user])
+        all_ = a
+    else:
+        all_ = Sheep.objects.all().filter(farm__farmers__in=[request.user])
+    if filter_ is None:
+        return all_
+    return all_.filter(**filter_)
 
 
 @login_required
 def index(request):
-    sheep = get_all_sheep(request)
-    return TemplateResponse(request, 'index.html', context={'sheep': sheep})
+    prod_sheep = get_all_sheep(request, filter_={'dead__isnull': True,
+                                                 'removed__isnull': True})
+    dead_sheep = [s for s in get_all_sheep(request) if s not in prod_sheep]
+    return TemplateResponse(request, 'index.html', context={'prod_sheep': prod_sheep,
+                                                            'dead_sheep': dead_sheep})
 
 
 @login_required
