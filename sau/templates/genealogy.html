@@ -41,8 +41,12 @@
       <th>Navn</th>
     </tr>
   </thead>
-  <tbody>
-    {% include "sheep_row.html" with sheep=descendants %}
+  <tbody class="dead_sheep">
+    {% include "sheep_row.html" with sheep=prod_children %}
+  </tbody>
+  <tr><td colspan=2> out of production </td></tr>
+  <tbody class="dead_sheep">
+    {% include "sheep_row.html" with sheep=dead_children %}
   </tbody>
 </table>
 {% endblock %}

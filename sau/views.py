@@ -137,12 +137,17 @@ def tree(request, slug=''):  # genealogy
 
     # statistics
     body_count = len([s for s in subtree if s.dead is not None])
-    qualities = '' if not body_count else [s.quality for s in subtree]
+    qualities = [] if not body_count else [s.quality for s in subtree]
+    quality_dict = {q: qualities.count(q) for q in qualities if q}
+
+    prod_children = [s for s in subtree if s.alive]
+    dead_children = [s for s in subtree if s not in prod_children]
 
     return TemplateResponse(
         request, 'genealogy.html', context={
             'sheep': current_sheep,
-            'descendants': subtree,
+            'prod_children': prod_children,
+            'dead_children': dead_children,
             'number_dead': body_count,
-            'qualities': qualities,
+            'qualities': quality_dict,
         })
