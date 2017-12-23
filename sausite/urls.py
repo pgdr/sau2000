@@ -16,8 +16,15 @@ Including another URLconf
 
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.conf import settings
+
 
 urlpatterns = [
     url(r'^', include('sau.urls')),
     url(r'^admin/', admin.site.urls),
 ]
+
+## debug stuff to serve static media
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
