@@ -3,12 +3,22 @@
 {% block breadcrumb %}
 <li>
   <span>
+    Sau
+  </span>
+</li>
+<li>
+  <span>
+    {% include "sheep_link.html" with tree="no" %}
+  </span>
+</li>
+<li>
+  <span>
     Tree
   </span>
 </li>
 <li>
   <span>
-    {% include "sheep_link.html" with sheep=sheep %}
+    {% include "sheep_link.html" with tree="only" %}
   </span>
 </li>
 {% endblock %}
@@ -25,8 +35,8 @@
 
 <h3>Summary</h3>
 <div style="width: 50%">
-  {% if number_dead %}
-  {% include "statistics.html" with number_dead=number_dead qualities=qualities %}
+  {% if stats.body_count %}
+  {% include "statistics.html" %}
   {% else %}
   No dead children.
   {% endif %}
@@ -44,7 +54,7 @@
   <tbody class="dead_sheep">
     {% include "sheep_row.html" with sheep=prod_children %}
   </tbody>
-  {% if dead_sheep %}
+  {% if dead_children %}
   <tr><td colspan=2> out of production </td></tr>
   <tbody class="dead_sheep">
     {% include "sheep_row.html" with sheep=dead_children %}

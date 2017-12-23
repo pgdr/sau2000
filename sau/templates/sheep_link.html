@@ -1,6 +1,10 @@
 {% if sheep %}
+{% if tree != "only" %}
 <a href="{% url 'sau' sheep.slug %}">{{sheep.name}}</a>
+{% endif %}
+{% if tree != "no" %}
 <a href="{% url 'tree' sheep.slug %}">(↗)</a>
+{% endif %}
 {% else %}
 N/A
 {% endif %}
