@@ -1,23 +1,10 @@
 {% load staticfiles %}
 
-<ul>
-  <li>Dead children: {{ stats.body_count }}</li>
-  <li>Weight stats:
-    <ul>
-      <li>min = {{ stats.weight_min }}</li>
-      <li>avg = {{ stats.weight_avg }}</li>
-      <li>max = {{ stats.weight_max }}</li>
-      <li>std = {{ stats.weight_std }}</li>
-    </ul>
-</ul>
-
-<script src="{% static "js/Chart.bundle.min.js" %}"></script>
-
-<h3>Lambs per year</h3>
+<h3>Offspring per year</h3>
 {{svgs.lpy|safe}}
 
-<h3>Qualities</h3>
+<h3>Offspring quality</h3>
 {{svgs.quality|safe}}
 
-<h3>Weights</h3>
+<h3>Offspring weight</h3>
 {{svgs.weight|safe}}

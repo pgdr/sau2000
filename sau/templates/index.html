@@ -15,7 +15,7 @@
       <div class="inner-status">
         <h1 class="page-title">{% block page_title %}<a href="{% url 'index' %}">Sau2000</a>{% endblock %}</h1>
         <ul class="breadcrumb">
-            <li><a href="{% url 'index' %}">Hjem</a></li>
+            <li><a href="{% url 'index' %}">{{farm}}</a></li>
           {% block breadcrumb %}
           {% endblock %}
         </ul>
@@ -25,23 +25,29 @@
     {% endblock %}
     <div class="content">
       {% block content %}
-      <table class="pure-table responsive">
-        <thead>
-          <tr>
-            <th>&Oslash;re</th>
-            <th>Navn</th>
-          </tr>
-        </thead>
-        <tbody class="prod_sheep">
-        {% include "sheep_row.html" with sheep=prod_sheep %}
-        {% if dead_sheep %}
-        </tbody>
-        <tr><td colspan=2> out of production </td></tr>
-        <tbody class="dead_sheep">
-        {% include "sheep_row.html" with sheep=dead_sheep %}
-        </tbody>
-        {% endif %}
-      </table>
+      <div class="content-box">
+
+        <h2 class="farm-name">{{farm.name}}</h2>
+
+        <table class="pure-table responsive">
+          <thead>
+            <tr>
+              <th>&Oslash;re</th>
+              <th>Navn</th>
+            </tr>
+          </thead>
+          <tr><td colspan=2><span class="prod-status in-prod">In production</span></td></tr>
+          <tbody class="prod_sheep">
+          {% include "sheep_row.html" with sheep=prod_sheep %}
+          {% if dead_sheep %}
+          </tbody>
+          <tr><td colspan=2><span class="prod-status non-prod">Out of production</span></td></tr>
+          <tbody class="dead_sheep">
+          {% include "sheep_row.html" with sheep=dead_sheep %}
+          </tbody>
+          {% endif %}
+        </table>
+      </div>
       {% endblock %}
     </div>
   </body>

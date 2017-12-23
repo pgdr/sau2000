@@ -84,12 +84,28 @@ def _get_sheep_or_404(request, slug):
 
 @login_required
 def sau(request, slug=""):
-    sheep = _get_sheep_or_404(request, slug)
-    doses = Dose.get(sheep=sheep)
+    current_sheep = _get_sheep_or_404(request, slug)
+    doses = Dose.get(sheep=current_sheep)
+
+    subtree = current_sheep.children_tree
+
+    # statistics
+    dead = [s for s in subtree if s.dead is not None]
+    svgs = get_statplots(dead, subtree)
+    stat = get_statistics(dead, subtree)
+
+    prod_children = [s for s in subtree if s.alive]
+    dead_children = [s for s in subtree if s not in prod_children]
 
     return TemplateResponse(
-        request, 'sau.html', context={
-            'sheep': sheep,
+        request,
+        'sau.html',
+        context={
+            'sheep': current_sheep,
+            'prod_children': prod_children,
+            'dead_children': dead_children,
+            'stats': stat,
+            'svgs': svgs,
             'doses': doses,
         })
 

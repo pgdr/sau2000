@@ -20,7 +20,7 @@ plots = namedtuple('plots', ['quality', 'weight', 'lpy'])
 _SVG_ARGS = """
 viewBox="0 0 460 345"
 preserveAspectRatio="xMidYMin slice"
-style="width: 150%;"
+style="max-width: 100%;"
 """
 
 

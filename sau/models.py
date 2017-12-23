@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from math import trunc
+
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 
 QUALITIES = (
@@ -107,6 +110,10 @@ class Sheep(models.Model):
                     seen.add(s)
                     queue.append(s)
         return res
+
+    @property
+    def age(self):
+        return trunc((timezone.now() - self.birth_date_utc).days / 365)
 
     def __repr__(self):
         return 'Sheep(name=%s)' % self.name

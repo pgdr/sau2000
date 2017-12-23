@@ -1,118 +1,158 @@
 {% extends 'index.html' %}
-{% load humanize %}
+{% load humanize staticfiles %}
 
 {% block breadcrumb %}
-<li><span>Sau</span></li>
-<li><span>    {% include "sheep_link.html" with sheep=sheep %}
-</span></li>
+<li>{% include "sheep_link.html" with sheep=sheep %}</li>
 {% endblock %}
 
 {% block content %}
-<h2>{{ sheep.name }} {% include "earmark.html" with number=sheep.ear_tag color=sheep.ear_tag_color %}</h2>
+<div class="content-box">
+  <div class="sheep-image">
+    <img src="{% static "img/example-sheep.jpg" %}">
+  </div>
 
+  <div class="sheep-details">
+    <dl>
+      <dd>{{ sheep.age }}</dd>
+      <dt>Age</dt>
 
-<div class="sau-section">
-  <p class="sau-section-header">Administration</p>
-  <ul>
-    <li>
-      <p class="sau-definition">Details</p>
-      <p class="sau-data"><a href="{% url 'admin:sau_sheep_change' sheep.id %}">Edit Sheep</a></p>
-    </li>
-    <li>
-      <p class="sau-definition">Deletion</p>
-      <p class="sau-data"><a href="{% url 'admin:sau_sheep_delete' sheep.id %}">Delete Sheep</a></p>
-    </li>
+      <dd class="prod-status {% if not sheep.dead and not sheep.removed %}in-prod{%else%}non-prod{%endif%}">{% if not sheep.dead and not sheep.removed %}In production{% else %}Out of production{% endif %}</dd>
+      <dt>Status</dt>
 
-  </ul>
-</div>
+      <dd>{% include "earmark.html" with number=sheep.ear_tag color=sheep.ear_tag_color %}</dd>
+      <dt>Earmark</dt>
 
-<div class="sau-section">
-  <p class="sau-section-header">Background</p>
-  <ul>
+      <dd>{{ sheep.get_sex_display }}</dd>
+      <dt>Gender</dt>
+    </dl>
+  </div>
 
-    <li>
-      <p class="sau-definition">Born</p>
-      <p class="sau-data">{{ sheep.birth_date_utc }} (age: {{ sheep.birth_date_utc | timesince }})</p>
-    </li>
+  <h2 class="sheep-title">{{ sheep.name }}</h2>
 
-    {% if sheep.mother %}
+  <p class="sheep-comment">
+    {{sheep.comments}}
+  </p>
+
+  <ul class="sau-section">
     <li>
       <p class="sau-definition">Mother</p>
-      <p class="sau-data"><a href="/sau/{{sheep.mother.slug}}">{{sheep.mother}}</a></p>
+      <p class="sau-data">
+        {% if sheep.mother %}
+        <a href="/sau/{{sheep.mother.slug}}">{{sheep.mother}}</a>
+        {% else %}
+        No mother
+        {% endif %}
+      </p>
     </li>
-    {% endif %}
 
-    {% if sheep.father %}
     <li>
       <p class="sau-definition">Father</p>
-      <p class="sau-data"><a href="/sau/{{sheep.father.slug }}"> {{sheep.father}} </a></p>
+      <p class="sau-data">
+        {% if sheep.father %}
+        <a href="/sau/{{sheep.father.slug }}"> {{sheep.father}} </a>
+        {% else %}
+        No father
+        {% endif %}
+      </p>
     </li>
-    {% endif %}
 
-    {% if sheep.origin %}
     <li>
       <p class="sau-definition">Origin</p>
-      <p class="sau-data">{{ sheep.origin }}</p>
+      <p class="sau-data">
+        {{ sheep.origin|default:sheep.farm.name }}</p>
     </li>
+  </ul>
+</div>
+
+<div class="content-box">
+  <h3>Offspring</h3>
+  {% if sheep.children %}
+  <table class="pure-table responsive">
+    <thead>
+      <tr>
+        <th>&Oslash;re</th>
+        <th>Navn</th>
+      </tr>
+    </thead>
+    {% if prod_children %}
+    <tr><td colspan=2><span class="prod-status in-prod">In production</span></td></tr>
+    <tbody class="prod_sheep">
+    {% include "sheep_row.html" with sheep=prod_children %}
+    </tbody>
     {% endif %}
-
-  </ul>
+    {% if dead_children %}
+    <tr><td colspan=2><span class="prod-status non-prod">Out of production</span></td></tr>
+    <tbody class="dead_sheep">
+    {% include "sheep_row.html" with sheep=dead_children %}
+    </tbody>
+    {% endif %}
+  </table>
+  {% else %}
+  <p class="empty">No offspring</p>
+  {% endif %}
 </div>
 
-{% if sheep.children %}
-<div class="sau-section">
-  <p class="sau-section-header">Descendants</p>
-  <ul>
-    {% for s in sheep.children %}
+<div class="content-box">
+  <ul class="sau-section">
     <li>
-      <p class="sau-definition">{% include "earmark.html" with number=s.ear_tag color=s.ear_tag_color %}</p>
-      <p class="sau-data"><a href="/sau/{{ s.slug }}">{{ s.name }}</a></p>
+      <p class="sau-definition">Offspring in production</p>
+      <p class="sau-data">
+        {{ prod_children|length }}
+      </p>
     </li>
+
+    <li>
+      <p class="sau-definition">Offspring out of production</p>
+      <p class="sau-data">
+        {{ dead_children|length }}
+      </p>
+    </li>
+
+    <li>
+      <p class="sau-definition">Weight key numbers</p>
+      <p class="sau-data">
+      min: {{ stats.weight_min }}, 
+      avg: {{ stats.weight_avg }}, 
+      max: {{ stats.weight_max }}, 
+      std: {{ stats.weight_std }}
+      </p>      
+    </li>
+  </ul>
+
+  {% include "statistics.html" %}
+</div>
+
+<div class="content-box">
+  <h3>Medicine</h3>
+
+  {% if doses %}
+  <table class="pure-table doses-table">
+    <thead>
+      <tr>
+        <th>Dato</th>
+        <th>Medisin</th>
+        <th>Mengde</th>
+      </tr>
+    </thead>
+    {% for d in doses %}
+    <tr>
+      <td>{{ d.date_utc }}</td>
+      <td>{{ d.medicine.name }}</td>
+      <td>{{ d.amount }}</td>
+    </tr>
     {% endfor %}
-  </ul>
+  </table>
+  {% else %}
+  <p class="empty">No medicine administered.</p>
+  {% endif %}
 </div>
-{% endif %}
 
-{% if doses %}
-<div class="sau-section">
-  <p class="sau-section-header">Medicine</p>
-  <ul>
-    <li>
-      <p class="sau-definition">Doses</p>
-      <div class="sau-data">
-        <table class="pure-table doses-table">
-          <thead>
-            <tr>
-              <th>Dato</th>
-              <th>Medisin</th>
-              <th>Mengde</th>
-            </tr>
-          </thead>
-          {% for d in doses %}
-          <tr>
-            <td>{{ d.date_utc }}</td>
-            <td>{{ d.medicine.name }}</td>
-            <td>{{ d.amount }}</td>
-          </tr>
-          {% endfor %}
-        </table>
-      </div>
-    </li>
-  </ul>
-</div>
-{% endif %}
-
-<div class="sau-section">
-  <p class="sau-section-header">Other</p>
-  <ul>
-    <li>
-      <p class="sau-definition">Comments</p>
-      <p class="sau-data">{{ sheep.comments|default:"Ingen kommentar" }}</p>
-    </li>
-    <li>
-      <p class="sau-definition">Medicine</p>
-      <p class="sau-data"><a href="/sau/{{ sheep.slug }}/dose">Add dose</a></p>
-    </li>
+<div class="content-box">
+  <h3>Administration</h3>
+  <ul class="admin-links">
+      <li><a href="/sau/{{ sheep.slug }}/dose">Administer medicine</a></li>
+      <li><a href="{% url 'admin:sau_sheep_change' sheep.id %}">Edit Sheep</a></li>
+      <li><a href="{% url 'admin:sau_sheep_delete' sheep.id %}">Delete Sheep</a></li>
   </ul>
 </div>
 

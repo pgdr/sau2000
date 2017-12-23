@@ -35,8 +35,11 @@ a {
     font-size: 12pt;
     margin: 0;
     line-height: 50px;
-    padding: 0 15px 0 20px;
+    padding: 0 15px 0 55px;
     display: inline-block;
+    background: url(../img/logo.svg) no-repeat;
+    background-size: 35px 35px;
+    background-position: 10px 50%;
 }
 
 .page-title a {
@@ -83,11 +86,17 @@ a {
 }
 
 .content {
-    background-color: #F4F4F4;
     max-width: 1100px;
     padding: 70px 20px 20px 20px;
     margin: 0 auto;
     box-sizing: border-box;
+}
+
+.content-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 @media (max-width: 500px) {
@@ -102,6 +111,10 @@ a {
 
 .content h2 .earmark {
     position: relative;
+}
+
+.content-box h3:first-child {
+    margin-top: 0;
 }
 
 .earmark {
@@ -168,10 +181,93 @@ a {
 }
 
 
-.sau-section {
-    border-bottom: 1px solid #9099A2;
-    padding: 20px 0 0 150px;
+.sheep-image {
+    max-width: 40%;
+    float: left;
+    box-sizing: border-box;
+    padding: 10px 0 20px 0;
+}
+
+.sheep-image img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 1000px;
+}
+
+.sheep-title {
+    clear: both;
+}
+
+.sheep-details {
+    float: left;
+    width: 60%;
+    margin-top: 10px;
+}
+
+.sheep-details dl {
+    margin: 0;
+    padding-left: 40px;
+}
+
+.sheep-details dd {
+    font-weight: bold;
+    margin: 0;
+}
+
+.empty {
+    color: #999;
+}
+
+.farm-name {
+    font-family: Georgia, serif;
+    font-weight: 100;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 2.2em;
+    margin: 0 0 2em;
+    padding: 1em 0 0;
+    color: #666;
+}
+
+.prod-status {
     position: relative;
+    padding-left: 14px;
+}
+
+.prod-status:before {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 6px;
+    left: 0;
+    border-radius: 100px;
+}
+
+.in-prod:before {
+    background-color: green;
+}
+
+.non-prod:before {
+    background-color: gray;
+}
+
+.sheep-details dt {
+    margin-bottom: 10px;
+}
+
+.sheep-comment {
+    line-height: 1.5;
+}
+
+
+.sau-section {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .sau-section:after {
@@ -198,7 +294,7 @@ a {
 }
 
 .sau-section li {
-    width: 50%;
+    width: 33.3%;
     float: left;
     margin-bottom: 20px
 }
@@ -216,7 +312,7 @@ a {
 table.responsive {
     width: 100%;
     border-collapse: collapse;
-    margin:50px auto;
+    margin: 0 auto;
 }
 
 /* Zebra striping */
