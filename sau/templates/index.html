@@ -15,7 +15,7 @@
       <div class="inner-status">
         <h1 class="page-title">{% block page_title %}<a href="{% url 'index' %}">Sau2000</a>{% endblock %}</h1>
         <ul class="breadcrumb">
-            <li><a href="{% url 'index' %}">{{farm}}</a></li>
+            <li><a href="{% url 'index' %}">{{farm}}</a> [<a href="{% url 'stats' %}">stats</a>]</li>
           {% block breadcrumb %}
           {% endblock %}
         </ul>

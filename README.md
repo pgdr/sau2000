@@ -39,4 +39,3 @@ pip install -r requirements.txt
 
 1. Potentially divide sheep into flocks
 2. Get statistics for each Sau on quality, fat, weight per year
-3. Cause for dose

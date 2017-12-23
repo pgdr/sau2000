@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% load humanize %}
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+<h2>Stats</h2>
+
+
+<h3>Born per year</h3>
+{{born|safe}}
+
+<h3>Slaughter weights per year</h3>
+{{weight|safe}}
+
+{% endblock %}
