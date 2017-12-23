@@ -4,6 +4,8 @@ from sau.models import Farm
 
 def add_farm(request):
     u = request.user
+    if u.is_anonymous:
+        return {}
     farms = Farm.objects.all().filter(farmers__in=[u])
     if len(farms) == 0:
         raise LookupError("%s did not belong to any farm." % u.username)

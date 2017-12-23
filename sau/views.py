@@ -183,6 +183,8 @@ def tree(request, slug=''):  # genealogy
 @login_required
 def stats(request):
     all_sheep = Sheep.objects.all()
+    if not request.user.is_superuser:
+        all_sheep = all_sheep.filter(farm__farmers__in=[request.user])
 
     born_stat = get_born_per_year(all_sheep)
     weight_stat = get_weight_per_year(all_sheep)
