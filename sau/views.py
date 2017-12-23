@@ -9,7 +9,8 @@ from django.http import Http404
 
 from sau.models import Sheep, Dose, Farm
 from .forms import DoseForm
-from .statistics import get_statistics, get_statplots
+from .statistics import (get_statistics, get_statplots, get_born_per_year,
+                         get_weight_per_year)
 
 # SAUS exists solely to populate an empty DB with some stuff.  Will be removed.
 SAUS = [
@@ -177,4 +178,26 @@ def tree(request, slug=''):  # genealogy
             'dead_children': dead_children,
             'stats': stat,
             'svgs': svgs,
+        })
+
+@login_required
+def stats(request):
+    all_sheep = Sheep.objects.all()
+    if not request.user.is_superuser:
+        all_sheep = all_sheep.filter(farm__farmers__in=[request.user])
+
+    born_stat = get_born_per_year(all_sheep)
+    weight_stat = get_weight_per_year(all_sheep)
+
+    prod = [s for s in all_sheep if s.alive]
+    dead = [s for s in all_sheep if s not in prod]
+
+    return TemplateResponse(
+        request,
+        'stats.html',
+        context={
+            'prod': prod,
+            'dead': dead,
+            'born': born_stat,
+            'weight': weight_stat,
         })
