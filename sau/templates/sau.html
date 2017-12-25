@@ -155,7 +155,7 @@
   <h3>Administration</h3>
   <ul class="admin-links">
       <li><a href="/sau/{{ sheep.slug }}/dose">Administer medicine</a></li>
-      <li><a href="{% url 'admin:sau_sheep_change' sheep.id %}">Edit Sheep</a></li>
+      <li><a href="{% url 'edit_sheep' sheep.slug %}">Edit Sheep</a></li>
       <li><a href="{% url 'admin:sau_sheep_delete' sheep.id %}">Delete Sheep</a></li>
   </ul>
 </div>
