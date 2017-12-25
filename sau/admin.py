@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.core.exceptions import FieldError
 from django.contrib import admin
 from .models import Sheep, Medicine, Dose, Farm
 
@@ -10,7 +11,11 @@ class FarmAwareModelAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        return qs.filter(farm__farmers__in=[request.user])
+        try:
+            return qs.filter(farm__farmers__in=[request.user])
+        except FieldError as ferr:
+            # when type is not farm
+            return qs.filter(farmers__in=[request.user])
 
 
 class SheepForm(FarmAwareModelAdmin):
@@ -22,7 +27,7 @@ class SheepForm(FarmAwareModelAdmin):
     """
 
     # To get gender-aware dropdown list for parent of a sheep
-    def sheep_parent_filter(self, db_field, request, **kwargs):
+    def __sheep_parent_filter(self, db_field, request, **kwargs):
         filters = {}
         if db_field.name == 'father':
             filters['sex'] = 'm'  # male
@@ -36,10 +41,12 @@ class SheepForm(FarmAwareModelAdmin):
             db_field, request, **kwargs)
 
     # To get user-aware dropdown list for farm of a sheep
-    def farm_filter(self, db_field, request, **kwargs):
+    def __farm_filter(self, db_field, request, **kwargs):
+        if db_field.name != 'farm':
+            raise ValueError('Cannot filter non-farm.  Was: %s' % db_field.name)
         filters = {}
         if not request.user.is_superuser:
-            filters['farm__farmers__in'] = [request.user]
+            filters['farmers__in'] = [request.user]
         kwargs['queryset'] = Farm.objects.filter(**filters)
         return super(SheepForm, self).formfield_for_foreignkey(
             db_field, request, **kwargs)
@@ -49,10 +56,9 @@ class SheepForm(FarmAwareModelAdmin):
     # * farm
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name in ('father', 'mother'):
-            return self.sheep_parent_filter(db_field, request, **kwargs)
-
+            return self.__sheep_parent_filter(db_field, request, **kwargs)
         if db_field.name == 'farm':
-            return self.farm_filter(db_field, request, **kwargs)
+            return self.__farm_filter(db_field, request, **kwargs)
         return super(SheepForm, self).formfield_for_foreignkey(
             db_field, request, **kwargs)
 
