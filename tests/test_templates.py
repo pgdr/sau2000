@@ -13,16 +13,20 @@ def generate_sheep_db():
 
 class TemplateTestcase(TestCase):
 
-    def setUp(self):
-        generate_sheep_db()
-        self.c = Client()
-        self.username = 'Smeagol'
-        self.password = 'myprecious'
-        self.user = User.objects.create_user(username=self.username,
-                                             password=self.password)
+    @classmethod
+    def setUpClass(cls):
         farm = Farm.objects.create(name='Misty Mountains')
-        farm.farmers.add(self.user)
+        cls.username = 'Smeagol'
+        cls.password = 'myprecious'
+        cls.user = User.objects.create_user(username=cls.username,
+                                             password=cls.password)
+        farm.farmers.add(cls.user)
         farm.save()
+        generate_sheep_db()
+
+    def setUp(self):
+        self.c = Client()
+
 
     def test_nologin_site(self):
         for url in ('/', '/sau/britanna', '/sau/nosuchsau'):
@@ -48,3 +52,8 @@ class TemplateTestcase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('Hei', str(response.content))
         self.assertIn(self.username, str(response.content))
+
+
+    @classmethod
+    def tearDownClass(cls):
+        pass
