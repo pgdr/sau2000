@@ -27,7 +27,7 @@
       {% block content %}
       <div class="content-box">
 
-        <h2 class="farm-name">{{farm.name}}</h2>
+        <h2 class="farm-name">{{farm.name}} <a href="{% url 'new_sheep' %}">(+)</a></h2>
 
         <table class="pure-table responsive">
           <thead>

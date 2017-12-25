@@ -4,44 +4,14 @@ from datetime import datetime as dt
 
 from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
-from django.shortcuts import get_object_or_404, redirect
-from django.http import Http404
 
 from sau.models import Sheep, Dose, Farm
-from .forms import DoseForm
+
 from .statistics import (get_statistics, get_statplots, get_born_per_year,
                          get_weight_per_year)
 
-# SAUS exists solely to populate an empty DB with some stuff.  Will be removed.
-SAUS = [
-    {
-        'name': 'britanna',
-        'birth_date_utc': dt.now(),
-        'sex': 'f',
-    },
-    {
-        'name': 'lolcakes',
-        'birth_date_utc': dt.now(),
-        'sex': 'f',
-        'ear_tag': '2608',
-        'ear_tag_color': 'r',
-        'quality': 'e+',
-    },
-    {
-        'name': 'rambo',
-        'birth_date_utc': dt.now(),
-        'sex': 'm',
-        'quality': 'p-',
-    },
-]
-
-
-def __init():
-    f = Farm.objects.all()[0]
-    f.save()
-    for sau in SAUS:
-        s = Sheep.objects.create(**sau, farm=f)
-        s.save()
+from .views_util import _get_sheep_or_404
+from .views_editors import add_dose, edit_sheep, new_sheep
 
 
 def get_all_sheep(request, *, filter_=None):
@@ -75,14 +45,6 @@ def index(request):
         })
 
 
-def _get_sheep_or_404(request, slug):
-    if request.user.is_superuser:
-        return get_object_or_404(Sheep, slug=slug)
-
-    return get_object_or_404(
-        Sheep, slug=slug, farm__farmers__in=[request.user])
-
-
 @login_required
 def sau(request, slug=""):
     current_sheep = _get_sheep_or_404(request, slug)
@@ -112,51 +74,6 @@ def sau(request, slug=""):
 
 
 @login_required
-def _save_dose(request, slug):
-    form = DoseForm(request.POST)
-    if form.is_valid():
-        dose = form.save(commit=False)
-        dose.sheep = _get_sheep_or_404(request, slug)
-        h, m = dt.now().hour, dt.now().minute
-        dose.date_utc = dose.date_utc.replace(hour=h, minute=m, second=0)
-        dose.save()
-    else:
-        raise ValueError('Invalid form for dose: %s' % str(request.POST))
-
-
-@login_required
-def dose(request, slug=''):
-    if request.method not in ('POST', 'GET'):
-        raise Http404
-
-    # on (method.POST and form.valid) we redirect to sau, else we return
-    # TemplateResponse with form
-
-    current_sheep = _get_sheep_or_404(request, slug)
-
-    if request.method == "POST":
-        form = DoseForm(request.POST)
-        if form.is_valid():
-            _save_dose(request, slug)
-            return redirect('sau', slug=slug)
-        else:
-            form = DoseForm(initial={
-                'sheep': current_sheep,
-                'date_utc': dt.now(),
-                'medicine': request.POST.get('medicine', 1)
-            })
-
-    elif request.method == "GET":
-        form = DoseForm(initial={'sheep': current_sheep, 'date_utc': dt.now()})
-
-    return TemplateResponse(
-        request, 'dose.html', context={
-            'form': form,
-            'sheep': current_sheep
-        })
-
-
-@login_required
 def tree(request, slug=''):  # genealogy
     current_sheep = _get_sheep_or_404(request, slug)
     subtree = current_sheep.children_tree
@@ -179,6 +96,7 @@ def tree(request, slug=''):  # genealogy
             'stats': stat,
             'svgs': svgs,
         })
+
 
 @login_required
 def stats(request):

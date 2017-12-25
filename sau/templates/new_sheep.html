@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+{% load humanize %}
+
+{% block breadcrumb %}
+<li><span>Edit</span></li>
+{% endblock %}
+
+{% block content %}
+
+<div class="content-box">
+<h2>New sheep</h2>
+
+<form class="pure-form pure-form-stacked" method="POST">
+  {% csrf_token %}
+  <fieldset>
+    {{ form.as_p }}
+    <input type="submit" value="Save" />
+  </fieldset>
+</form>
+</div>
+
+{% endblock %}
