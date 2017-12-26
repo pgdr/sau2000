@@ -11,7 +11,7 @@ from .statistics import (get_statistics, get_statplots, get_born_per_year,
                          get_weight_per_year)
 
 from .views_util import _get_sheep_or_404
-from .views_editors import add_dose, edit_sheep, new_sheep
+from .views_editors import add_dose, create_or_edit_sheep
 
 
 def get_all_sheep(request, *, filter_=None):

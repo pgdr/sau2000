@@ -2,19 +2,30 @@
 {% load humanize %}
 
 {% block breadcrumb %}
+{% if sheep %}
 <li><a href="{% url 'sau' sheep.slug %}">{{sheep.name}}</a></li>
 <li><span>Edit</span></li>
+{% else %}
+<li><span>New sheep</span></li>
+{% endif %}
 {% endblock %}
 
 {% block content %}
 
 <div class="content-box">
-<h2>Edit {{ sheep.name }}</h2>
+<h2>New sheep</h2>
 
-<form class="pure-form pure-form-stacked" method="POST">
+<form class="pure-form pure-form-stacked{% if form.errors %} form-errors{% endif %}" method="POST">
   {% csrf_token %}
   <fieldset>
-    {{ form.as_p }}
+    <ul class="form-list">
+    {% for field in form.visible_fields %}
+        {% include 'parts/form_field.html' with field=field %}
+    {% endfor %}
+    </ul>
+    {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
     <input type="submit" value="Save" />
   </fieldset>
 </form>
