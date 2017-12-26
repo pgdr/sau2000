@@ -16,13 +16,9 @@ from .views_editors import add_dose, create_or_edit_sheep
 
 def get_all_sheep(request, *, filter_=None):
     if request.user.is_superuser:
-        a = Sheep.objects.all()
-        if len(a) == 0:
-            __init()
-            a = Sheep.objects.all()
-        all_ = a
+        all_ = Sheep.objects.all().order_by('birth_date_utc')
     else:
-        all_ = Sheep.objects.all().filter(farm__farmers__in=[request.user])
+        all_ = Sheep.objects.all().order_by('birth_date_utc').filter(farm__farmers__in=[request.user])
     if filter_ is None:
         return all_
     return all_.filter(**filter_)
