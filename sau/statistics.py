@@ -84,6 +84,8 @@ def _weights(sheeps):
     if not sheeps:
         return None
     weights = [s.weight for s in sheeps if s.weight]
+    if len(weight) == 0:
+        return None
     upper = max(weights)
     weight_labels = list(range(0, int(upper + 2), 200))
     weight_lst = [0] * len(weight_labels)
