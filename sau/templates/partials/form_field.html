@@ -1,0 +1,10 @@
+<li class="pure-control-group{% if field.errors %} has-errors{% endif %}">
+    {{ field.label_tag }}
+    {{ field }}
+    {% for error in field.errors %}
+    <span class="pure-form-message field-error">{{ error }}</span>
+    {% endfor %}
+    {% if field.help_text %}
+    <span class="pure-form-message field-help-text">{{ field.help_text|safe }}</span>
+    {% endif %}
+</li>

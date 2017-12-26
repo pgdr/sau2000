@@ -20,7 +20,7 @@
   <fieldset>
     <ul class="form-list">
     {% for field in form.visible_fields %}
-        {% include 'parts/form_field.html' with field=field %}
+        {% include 'partials/form_field.html' with field=field %}
     {% endfor %}
     </ul>
     {% for hidden in form.hidden_fields %}
