@@ -31,4 +31,17 @@
 </form>
 </div>
 
+
+{% if sheep %}
+<div class="content-box">
+  <h3>Administration</h3>
+  <ul class="admin-links">
+      <li><a href="/sau/{{ sheep.slug }}/dose">Administer medicine</a></li>
+      <li><a href="{% url 'admin:sau_sheep_change' sheep.id %}">Advanced editor</a></li>
+      <li><a href="{% url 'admin:sau_sheep_delete' sheep.id %}">Delete Sheep</a></li>
+  </ul>
+</div>
+{% endif %}
+
+
 {% endblock %}
