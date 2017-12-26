@@ -17,6 +17,10 @@ a {
     background: #3E425C;
     color: #9099A2;
     z-index: 1;
+
+    -webkit-box-shadow: 0 0 5px black;
+    -moz-box-shadow:    0 0 5px black;
+    box-shadow:         0 0 5px black;
 }
 
 .inner-status {
@@ -303,6 +307,52 @@ a {
     color: #96858D;
     text-transform: uppercase;
     font-size: 0.9em;
+}
+
+.form-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.form-list li {
+    margin-bottom: 10px;
+}
+
+.form-list li.has-errors input {
+    background-color: #FCE4E4;
+    border-color: #EB4945;
+}
+
+.form-list .field-error {
+    font-weight: bold;
+    color: #CC0033;
+}
+
+.messages {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.messages li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.messages .info {
+    background-color: #DDEDF6;
+}
+.messages .warning {
+    background-color: #FBF8E5;
+}
+.messages .success {
+    background-color: #E2EFDA;
+}
+.messages .error {
+    background-color: #EFDFDE;
 }
 
 /*

@@ -2,17 +2,18 @@
 from __future__ import unicode_literals
 from datetime import datetime as dt
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
 from django.shortcuts import redirect
 from django.http import Http404
+from django.utils.translation import gettext as _
 
 from .forms import DoseForm, SheepForm
 
-from .views_util import _get_sheep_or_404
+from .views_util import _get_sheep_or_404, _get_sheep
 
 from sau.models import Farm
-
 
 def _date_with_now_time(date):
     now = dt.now()
@@ -64,53 +65,6 @@ def add_dose(request, slug=''):
         })
 
 
-@login_required
-def _save_sheep(request, slug):
-    form = SheepForm(request.POST)
-    if form.is_valid():
-        new_sheep = form.save(commit=False)
-        sheep = _get_sheep_or_404(request, slug)
-        sheep.name = new_sheep.name
-        sheep.ear_tag = new_sheep.ear_tag
-        sheep.ear_tag_color = new_sheep.ear_tag_color
-        sheep.birth_date_utc = _date_with_now_time(new_sheep.birth_date_utc)
-        sheep.sex = new_sheep.sex
-        sheep.mother = new_sheep.mother
-        sheep.father = new_sheep.father
-        sheep.origin = new_sheep.origin
-        sheep.save()
-    else:
-        raise ValueError('Invalid form for sheep: %s' % str(request.POST))
-
-
-@login_required
-def edit_sheep(request, slug=''):
-    if request.method not in ('POST', 'GET'):
-        raise Http404
-
-    current_sheep = _get_sheep_or_404(request, slug)
-
-    if request.method == "POST":
-        form = SheepForm(request.POST)
-        if form.is_valid():
-            _save_sheep(request, slug)
-            return redirect('sau', slug=slug)
-        else:
-            form = SheepForm(instance=current_sheep)
-
-    elif request.method == "GET":
-        form = SheepForm(instance=current_sheep)
-
-    return TemplateResponse(
-        request,
-        'sau_edit.html',
-        context={
-            'form': form,
-            'sheep': current_sheep
-        })
-
-
-@login_required
 def __get_farm_for_user(request):
     farms = Farm.objects.all()
     return farms[0]
@@ -121,50 +75,59 @@ def __get_farm_for_user(request):
 
 
 @login_required
-def _create_sheep(request):
-    form = SheepForm(request.POST)
-    if form.is_valid():
-        new_sheep = form.save(commit=False)
-        new_sheep.farm = __get_farm_for_user(request)
-        new_sheep.birth_date_utc = _date_with_now_time(new_sheep.birth_date_utc)
-        new_sheep.save()
-        return new_sheep.slug
-    else:
-        raise ValueError('Invalid form for sheep: %s' % str(request.POST))
-
-
-
-def __sheep_form_values(request):
-    def GET(k, default=''):
-        return request.POST.get(k, default)
-
-    return {
-        'name': GET('name'),
-        'ear_tag': GET('ear_tag'),
-        'ear_color': GET('ear_tag_color', 'w'),
-        'birth_date_utc': GET('birth_date_utc', dt.now()),
-        'sex': GET('sex', 'f'),
-        'mother': GET('mother', None),
-        'father': GET('father', None),
-        'origin': GET('origin'),
-    }
-
-@login_required
-def new_sheep(request):
+def create_or_edit_sheep(request, slug=''):
     if request.method not in ('POST', 'GET'):
         raise Http404
 
+    current_sheep = _get_sheep(request, slug)
+    if current_sheep is None:
+        return _new_sheep(request)
+    else:
+        return _edit_sheep(request, current_sheep)
+
+
+def _save_sheep(request, form):
+    new_sheep = form.save(commit=False)
+    new_sheep.farm = __get_farm_for_user(request)
+    new_sheep.birth_date_utc = _date_with_now_time(new_sheep.birth_date_utc)
+    new_sheep.save()
+    return new_sheep
+
+
+def _new_sheep(request):
     if request.method == "POST":
         form = SheepForm(request.POST)
         if form.is_valid():
-            slug = _create_sheep(request)
-            return redirect('sau', slug=slug)
+            sheep = _save_sheep(request, form)
+            messages.success(request, 'Created %s' % sheep.name)
+            return redirect('sau', slug=sheep.slug)
+        # If form was not valid, it needs to be returned as-is, since it keeps
+        # track of the errors.
         else:
-            # likely missing required field
-            # form.errors is an HTML string of error fields
-            form = SheepForm(initial=__sheep_form_values(request))
+            messages.error(request,
+                           _('Form had errors, could not create new sheep.'))
 
     elif request.method == "GET":
         form = SheepForm()
 
-    return TemplateResponse(request, 'new_sheep.html', context={'form': form})
+    return TemplateResponse(request, 'sau_edit.html', context={'form': form})
+
+
+def _edit_sheep(request, sheep):
+    if request.method == "POST":
+        form = SheepForm(request.POST, instance=sheep)
+        if form.is_valid():
+            s = form.save()
+            return redirect('sau', slug=s.slug)
+        # Form not valid, let it pass through to the context.
+
+    elif request.method == "GET":
+        form = SheepForm(instance=sheep)
+
+    return TemplateResponse(
+        request,
+        'sau_edit.html',
+        context={
+            'form': form,
+            'sheep': sheep
+        })

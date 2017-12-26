@@ -29,3 +29,4 @@ class SheepForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['father'].queryset = Sheep.objects.filter(sex='m')  # male
         self.fields['mother'].queryset = Sheep.objects.filter(sex='f')  # female
+        self.fields['birth_date_utc'].required = True
