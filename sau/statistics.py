@@ -87,11 +87,11 @@ def _weights(sheeps):
     if len(weights) == 0:
         return None
     upper = max(weights)
-    weight_labels = list(range(0, int(upper + 2), 200))
+    weight_labels = list(range(0, int(upper + 2)))
     weight_lst = [0] * len(weight_labels)
     for i, w in enumerate(weight_labels):
         for sw in weights:
-            if w < sw <= w + 200:
+            if w < rount(sw) <= w + 1:
                 weight_lst[i] += 1
     return _svg_bar(weight_lst, weight_labels)
 
