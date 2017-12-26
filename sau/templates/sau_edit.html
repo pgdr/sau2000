@@ -2,14 +2,13 @@
 {% load humanize %}
 
 {% block breadcrumb %}
-<li><a href="{% url 'sau' sheep.slug %}">{{sheep.name}}</a></li>
 <li><span>Edit</span></li>
 {% endblock %}
 
 {% block content %}
 
 <div class="content-box">
-<h2>Edit {{ sheep.name }}</h2>
+<h2>New sheep</h2>
 
 <form class="pure-form pure-form-stacked" method="POST">
   {% csrf_token %}
