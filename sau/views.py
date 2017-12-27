@@ -18,7 +18,8 @@ def get_all_sheep(request, *, filter_=None):
     if request.user.is_superuser:
         all_ = Sheep.objects.all().order_by('birth_date_utc')
     else:
-        all_ = Sheep.objects.all().order_by('birth_date_utc').filter(farm__farmers__in=[request.user])
+        all_ = Sheep.objects.all().order_by('birth_date_utc').filter(
+            farm__farmers__in=[request.user])
     if filter_ is None:
         return all_
     return all_.filter(**filter_)
@@ -114,4 +115,27 @@ def stats(request):
             'dead': dead,
             'born': born_stat,
             'weight': weight_stat,
+        })
+
+
+@login_required
+def search(request):
+    q = request.GET.get('q', '')
+    all_sheep = get_all_sheep(request)
+    all_sheep = all_sheep.filter(name__icontains=q) | all_sheep.filter(
+        ear_tag__icontains=q)
+
+    prod_sheep = all_sheep.filter(**{
+        'dead__isnull': True,
+        'removed__isnull': True
+    })
+    dead_sheep = all_sheep.filter(dead__isnull=False) | all_sheep.filter(
+        removed__isnull=False)
+
+    return TemplateResponse(
+        request,
+        'index.html',
+        context={
+            'prod_sheep': prod_sheep,
+            'dead_sheep': dead_sheep
         })

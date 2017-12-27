@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^sau/(?P<slug>[-\w]{1,255})/dose', views.add_dose, name='dose'),
     url(r'^sau/(?P<slug>[-\w]{1,255})/edit', views.create_or_edit_sheep, name='edit_sheep'),
     url(r'^sau/(?P<slug>[-\w]{1,255})/tree', views.tree, name='tree'),
+    url(r'^search$', views.search, name='search'),
 ]
