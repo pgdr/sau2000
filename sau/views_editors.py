@@ -99,7 +99,7 @@ def _new_sheep(request):
         form = SheepForm(request.POST)
         if form.is_valid():
             sheep = _save_sheep(request, form)
-            messages.success(request, 'Created %s' % sheep.name)
+            messages.success(request, 'Created %s.  <a href="/new">Add another.</a>' % sheep.name)
             return redirect('sau', slug=sheep.slug)
         # If form was not valid, it needs to be returned as-is, since it keeps
         # track of the errors.
