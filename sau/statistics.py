@@ -52,6 +52,7 @@ def _svg_bar(data, labels):
     fig, ax = plt.subplots()
 
     plt.bar(np.arange(len(data)), data, tick_label=list(map(str, labels)))
+    plt.yticks(list(range(max(data)+1)))
 
     svg_data = __to_svg(fig=fig, ax=ax)
 
@@ -59,7 +60,7 @@ def _svg_bar(data, labels):
 
 def _svg_errorbar(x, y, yerr):
     fig, ax = plt.subplots()
-    matplotlib.pyplot.xticks(x)
+    plt.xticks(x)
     ax.errorbar(x, y, yerr=yerr, fmt='o')
     svg_data = __to_svg(fig=fig, ax=ax)
     return svg_data
@@ -91,7 +92,7 @@ def _weights(sheeps):
     weight_lst = [0] * len(weight_labels)
     for i, w in enumerate(weight_labels):
         for sw in weights:
-            if w < rount(sw) <= w + 1:
+            if w < round(sw) <= w + 1:
                 weight_lst[i] += 1
     return _svg_bar(weight_lst, weight_labels)
 
