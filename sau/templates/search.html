@@ -1,0 +1,11 @@
+<div class="search-box">
+  <div class="sau-branding"></div>
+  <p>Search</p>
+  <form method="get" class="search-form" action="{% url 'search' %}" name="search">
+    <input type="search" class="search-input" name="q" value="" /><br />
+    <input type="radio" name="s" value="all">All<br />
+    <input type="radio" name="s" value="prod">Prod<br />
+    <input type="radio" name="s" value="noprod">Noprod<br />
+    <button id="sbtn" class="search-button" type="submit">Search</button>
+  </form>
+</div>

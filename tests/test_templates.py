@@ -72,3 +72,17 @@ class TemplateTestcase(TestCase):
         client = self.login()
         html = self._get_html(client, '/sau/britanna/edit')
         self.assertIn('Advanced editor', html)
+
+    def test_search(self):
+        client = self.login()
+        html = self._get_html(client, '/search?q=brit')
+        self.assertIn('Found 1 ', html)
+
+        html = self._get_html(client, '/search?q=rb')
+        self.assertIn('Found 6 ', html)
+
+        html = self._get_html(client, '/search?q=rb&s=prod')
+        self.assertIn('Found 4 ', html)
+
+        html = self._get_html(client, '/search?q=rb&s=noprod')
+        self.assertIn('Found 2 ', html)
