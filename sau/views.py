@@ -137,5 +137,7 @@ def search(request):
         'index.html',
         context={
             'prod_sheep': prod_sheep,
-            'dead_sheep': dead_sheep
+            'dead_sheep': dead_sheep,
+            'is_search': True,
+            'search_results': len(prod_sheep) + len(dead_sheep),
         })

@@ -34,6 +34,13 @@
       </ul>
       {% endif %}
 
+      {% if is_search %}
+      <ul class="messages search">
+          <li>Found {{ search_results }} rows</li>
+      </ul>
+      {% endif %}
+
+
       {% block content %}
       <div class="content-box">
 
