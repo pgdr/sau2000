@@ -8,12 +8,14 @@ from django.template.response import TemplateResponse
 from django.shortcuts import redirect
 from django.http import Http404
 from django.utils.translation import gettext as _
+from django.urls import reverse
 
 from .forms import DoseForm, SheepForm
 
 from .views_util import _get_sheep_or_404, _get_sheep
 
 from sau.models import Farm
+
 
 def _date_with_now_time(date):
     now = dt.now()
@@ -99,7 +101,9 @@ def _new_sheep(request):
         form = SheepForm(request.POST)
         if form.is_valid():
             sheep = _save_sheep(request, form)
-            messages.success(request, 'Created %s' % sheep.name)
+            messages.success(request,
+                             'Created %s.  <a href="%s">Add another.</a>' %
+                             (sheep.name, reverse('new_sheep')))
             return redirect('sau', slug=sheep.slug)
         # If form was not valid, it needs to be returned as-is, since it keeps
         # track of the errors.
@@ -125,9 +129,7 @@ def _edit_sheep(request, sheep):
         form = SheepForm(instance=sheep)
 
     return TemplateResponse(
-        request,
-        'sau_edit.html',
-        context={
+        request, 'sau_edit.html', context={
             'form': form,
             'sheep': sheep
         })
