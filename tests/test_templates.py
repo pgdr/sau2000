@@ -80,3 +80,9 @@ class TemplateTestcase(TestCase):
 
         html = self._get_html(client, '/search?q=rb')
         self.assertIn('Found 6 ', html)
+
+        html = self._get_html(client, '/search?q=rb&s=prod')
+        self.assertIn('Found 4 ', html)
+
+        html = self._get_html(client, '/search?q=rb&s=noprod')
+        self.assertIn('Found 2 ', html)

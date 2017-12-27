@@ -120,7 +120,11 @@ def stats(request):
 
 @login_required
 def search(request):
-    q = request.GET.get('q', '')
+    q = request.GET.get('q', '')  # the query
+    s = request.GET.get('s', 'all')  # the status in (all, prod, noprod)
+    if s not in ('all', 'prod', 'noprod'):
+        s = 'all'
+
     all_sheep = get_all_sheep(request)
     all_sheep = all_sheep.filter(name__icontains=q) | all_sheep.filter(
         ear_tag__icontains=q)
@@ -131,6 +135,12 @@ def search(request):
     })
     dead_sheep = all_sheep.filter(dead__isnull=False) | all_sheep.filter(
         removed__isnull=False)
+
+    if s == 'prod':
+        dead_sheep = []
+    elif s == 'noprod':
+        prod_sheep = []
+
 
     return TemplateResponse(
         request,
