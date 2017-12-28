@@ -59,7 +59,7 @@ a {
 .breadcrumb {
     list-style: none;
     display: inline-block;
-    margin: 0;
+    margin: 0 0 20px 0;
     padding: 0;
 }
 
@@ -87,6 +87,58 @@ a {
     right: 0;
     top: 0;
     right: 20px;
+}
+
+
+.search-box {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    right: 0;
+    padding: 10px 0;
+    display: none;
+    background-color: #1f212e;
+    height: 50px;
+    -webkit-box-shadow: 0 0 5px black;
+    -moz-box-shadow:    0 0 5px black;
+    box-shadow:         0 0 5px black;
+
+}
+
+.search-form {
+    margin: 0 20px;
+    position: relative;
+}
+
+.search-box .input {
+    right: 100px;
+    position: absolute;
+    left: 0;
+    top: 5px;
+
+    box-sizing: border-box;
+}
+
+.search-box .input input {
+    width: 100%;
+    margin: 0;
+    display: block;
+}
+
+.search-box .button {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    box-sizing: border-box;
+    text-align: right;
+}
+
+.search-box .button button {
+    margin: 0;
+}
+
+.search-visible {
+    display: block;
 }
 
 .content {

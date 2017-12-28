@@ -9,22 +9,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="{% static "/img/logo.svg" %}"/>
+    <script>
+    function revealSearch() {
+        var elt = document.getElementById('ffs');
+        elt.classList.toggle('search-visible');
+    }
+    </script>
   </head>
   <body>
     {% block top_bar %}
     <div class="status">
       <div class="inner-status">
         <h1 class="page-title">{% block page_title %}<a href="{% url 'index' %}">Sau2000</a>{% endblock %}</h1>
+        <p class="auth">Hei, <a href="{% url 'admin:index' %}">{{ request.user.username }}</a>. <a href="{% url 'admin:logout' %}">Logg ut</a>
+        <span onclick="revealSearch()" style="cursor: pointer;">&#x1f50d;</span>
+        </p>
+      </div>
+    </div>
+    {% include "search.html" %}
+    {% endblock %}
+    <div class="content">
+
+      {% if request.path != "/" or is_search %}
         <ul class="breadcrumb">
-            <li><a href="{% url 'index' %}">{{farm}}</a> [<a href="{% url 'stats' %}">stats</a>]</li>
+            <li><a href="{% url 'index' %}">{{farm}}</a></li>
+          {% if is_search %}
+            <li>Search: {{ request.GET.q }}</li>
+          {% endif %}
           {% block breadcrumb %}
           {% endblock %}
         </ul>
-        <p class="auth">Hei, <a href="{% url 'admin:index' %}">{{ request.user.username }}</a>. <a href="{% url 'admin:logout' %}">Logg ut</a></p>
-      </div>
-    </div>
-    {% endblock %}
-    <div class="content">
+      {% endif %}
 
       {% if messages %}
       <ul class="messages">
@@ -34,18 +49,18 @@
       </ul>
       {% endif %}
 
-      {% if is_search %}
-      <ul class="messages search">
-          <li>Found {{ search_results }} rows</li>
-      </ul>
-      {% endif %}
-
-
       {% block content %}
       <div class="content-box">
 
         <h2 class="farm-name">{{farm.name}} <a href="{% url 'new_sheep' %}">(+)</a></h2>
 
+        {% if is_search %}
+        <ul class="messages search">
+            <li>Found {{ search_results }} rows</li>
+        </ul>
+        {% endif %}
+
+        {% if prod_sheep or dead_sheep %}
         <table class="pure-table responsive">
           <thead>
             <tr>
@@ -53,9 +68,11 @@
               <th>Navn</th>
             </tr>
           </thead>
+          {% if prod_sheep %}
           <tr><td colspan=2><span class="prod-status in-prod">In production</span></td></tr>
           <tbody class="prod_sheep">
           {% include "sheep_row.html" with sheep=prod_sheep %}
+          {% endif %}
           {% if dead_sheep %}
           </tbody>
           <tr><td colspan=2><span class="prod-status non-prod">Out of production</span></td></tr>
@@ -64,7 +81,9 @@
           </tbody>
           {% endif %}
         </table>
-        {% include "search.html" %}
+        {% endif %}
+
+        <p><a href="{% url 'stats' %}">Farm statistics.</a></p>
       </div>
       {% endblock %}
     </div>
