@@ -2,7 +2,7 @@
 {% load humanize staticfiles %}
 
 {% block breadcrumb %}
-<li>{% include "sheep_link.html" with sheep=sheep %}</li>
+<li>{{sheep.name}}</li>
 {% endblock %}
 
 {% block content %}
@@ -115,11 +115,11 @@
     <li>
       <p class="sau-definition">Weight key numbers</p>
       <p class="sau-data">
-      min: {{ stats.weight_min }}, 
-      avg: {{ stats.weight_avg }}, 
-      max: {{ stats.weight_max }}, 
+      min: {{ stats.weight_min }},
+      avg: {{ stats.weight_avg }},
+      max: {{ stats.weight_max }},
       std: {{ stats.weight_std }}
-      </p>      
+      </p>
     </li>
   </ul>
 

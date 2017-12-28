@@ -1,6 +1,10 @@
 <div id="ffs" class="search-box">
-  <form class="pure-form" action="{% url 'search' %}" name="search">
-    <input type="text" class="pure-input-rounded" name="q">
-    <button type="submit" class="pure-button">Search</button>
+  <form class="search-form pure-form" action="{% url 'search' %}" name="search">
+    <div class="input">
+        <input type="text" class="pure-input-rounded" name="q">
+    </div>
+    <div class="button">
+        <button type="submit" class="pure-button">Search</button>
+    </div>
   </form>
 </div>

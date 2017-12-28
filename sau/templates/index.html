@@ -12,11 +12,7 @@
     <script>
     function revealSearch() {
         var elt = document.getElementById('ffs');
-        if (elt.className.indexOf('search-visible') >= 0) {
-            elt.className = elt.className.replace(' search-visible', '');
-        } else {
-            elt.className += ' search-visible';
-        }
+        elt.classList.toggle('search-visible');
     }
     </script>
   </head>
@@ -24,20 +20,23 @@
     {% block top_bar %}
     <div class="status">
       <div class="inner-status">
-        <h1 class="page-title">{% block page_title %}<a href="{% url 'index' %}">{{farm}}</a>{% endblock %}</h1>
-        <ul class="breadcrumb">
-          <li><!--a href="{% url 'index' %}">{{farm}}</a--> [<a href="{% url 'stats' %}">stats</a>]</li>
-          {% block breadcrumb %}
-          {% endblock %}
-        </ul>
+        <h1 class="page-title">{% block page_title %}<a href="{% url 'index' %}">Sau2000</a>{% endblock %}</h1>
         <p class="auth">Hei, <a href="{% url 'admin:index' %}">{{ request.user.username }}</a>. <a href="{% url 'admin:logout' %}">Logg ut</a>
         <span onclick="revealSearch()" style="cursor: pointer;">&#x1f50d;</span>
         </p>
       </div>
-      {% include "search.html" %}
     </div>
+    {% include "search.html" %}
     {% endblock %}
     <div class="content">
+
+      {% if request.path != "/" %}
+        <ul class="breadcrumb">
+          <li class="genisis"><a href="{% url 'index' %}">{{farm}}</a></li>
+          {% block breadcrumb %}
+          {% endblock %}
+        </ul>
+      {% endif %}
 
       {% if messages %}
       <ul class="messages">
@@ -77,6 +76,8 @@
           </tbody>
           {% endif %}
         </table>
+
+        <p><a href="{% url 'stats' %}">Farm statistics.</a></p>
       </div>
       {% endblock %}
     </div>
