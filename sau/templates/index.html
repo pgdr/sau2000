@@ -30,9 +30,12 @@
     {% endblock %}
     <div class="content">
 
-      {% if request.path != "/" %}
+      {% if request.path != "/" or is_search %}
         <ul class="breadcrumb">
-          <li class="genisis"><a href="{% url 'index' %}">{{farm}}</a></li>
+            <li><a href="{% url 'index' %}">{{farm}}</a></li>
+          {% if is_search %}
+            <li>Search: {{ request.GET.q }}</li>
+          {% endif %}
           {% block breadcrumb %}
           {% endblock %}
         </ul>
@@ -46,18 +49,18 @@
       </ul>
       {% endif %}
 
-      {% if is_search %}
-      <ul class="messages search">
-          <li>Found {{ search_results }} rows</li>
-      </ul>
-      {% endif %}
-
-
       {% block content %}
       <div class="content-box">
 
         <h2 class="farm-name">{{farm.name}} <a href="{% url 'new_sheep' %}">(+)</a></h2>
 
+        {% if is_search %}
+        <ul class="messages search">
+            <li>Found {{ search_results }} rows</li>
+        </ul>
+        {% endif %}
+
+        {% if prod_sheep or dead_sheep %}
         <table class="pure-table responsive">
           <thead>
             <tr>
@@ -65,9 +68,11 @@
               <th>Navn</th>
             </tr>
           </thead>
+          {% if prod_sheep %}
           <tr><td colspan=2><span class="prod-status in-prod">In production</span></td></tr>
           <tbody class="prod_sheep">
           {% include "sheep_row.html" with sheep=prod_sheep %}
+          {% endif %}
           {% if dead_sheep %}
           </tbody>
           <tr><td colspan=2><span class="prod-status non-prod">Out of production</span></td></tr>
@@ -76,6 +81,7 @@
           </tbody>
           {% endif %}
         </table>
+        {% endif %}
 
         <p><a href="{% url 'stats' %}">Farm statistics.</a></p>
       </div>
