@@ -89,6 +89,19 @@ a {
     right: 20px;
 }
 
+
+.search-box {
+    max-width: 320px;
+    padding: 70px 20px 20px 20px;
+    margin: 0 auto;
+    padding: 20px;
+    display: None;
+}
+
+.search-visible {
+    display: block;
+}
+
 .content {
     max-width: 1100px;
     padding: 70px 20px 20px 20px;

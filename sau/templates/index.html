@@ -9,19 +9,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="{% static "/img/logo.svg" %}"/>
+    <script>
+    function revealSearch() {
+        var elt = document.getElementById('ffs');
+        if (elt.className.indexOf('search-visible') >= 0) {
+            elt.className = elt.className.replace(' search-visible', '');
+        } else {
+            elt.className += ' search-visible';
+        }
+    }
+    </script>
   </head>
   <body>
     {% block top_bar %}
     <div class="status">
       <div class="inner-status">
-        <h1 class="page-title">{% block page_title %}<a href="{% url 'index' %}">Sau2000</a>{% endblock %}</h1>
+        <h1 class="page-title">{% block page_title %}<a href="{% url 'index' %}">{{farm}}</a>{% endblock %}</h1>
         <ul class="breadcrumb">
-            <li><a href="{% url 'index' %}">{{farm}}</a> [<a href="{% url 'stats' %}">stats</a>]</li>
+          <li><!--a href="{% url 'index' %}">{{farm}}</a--> [<a href="{% url 'stats' %}">stats</a>]</li>
           {% block breadcrumb %}
           {% endblock %}
         </ul>
-        <p class="auth">Hei, <a href="{% url 'admin:index' %}">{{ request.user.username }}</a>. <a href="{% url 'admin:logout' %}">Logg ut</a></p>
+        <p class="auth">Hei, <a href="{% url 'admin:index' %}">{{ request.user.username }}</a>. <a href="{% url 'admin:logout' %}">Logg ut</a>
+        <span onclick="revealSearch()" style="cursor: pointer;">&#x1f50d;</span>
+        </p>
       </div>
+      {% include "search.html" %}
     </div>
     {% endblock %}
     <div class="content">
@@ -64,7 +77,6 @@
           </tbody>
           {% endif %}
         </table>
-        {% include "search.html" %}
       </div>
       {% endblock %}
     </div>
