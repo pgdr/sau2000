@@ -3,7 +3,7 @@
 
 {% block breadcrumb %}
 {% if sheep %}
-<li><a href="{% url 'sau' sheep.slug %}">{{sheep.name}}</a></li>
+<li><a href="{% url 'sau' sheep.slug sheep.id %}">{{sheep.name}}</a></li>
 <li><span>Edit</span></li>
 {% else %}
 <li><span>New sheep</span></li>
@@ -36,7 +36,7 @@
 <div class="content-box">
   <h3>Administration</h3>
   <ul class="admin-links">
-      <li><a href="/sau/{{ sheep.slug }}/dose">Administer medicine</a></li>
+      <li><a href="{% url 'dose' sheep.slug sheep.id %}">Administer medicine</a></li>
       <li><a href="{% url 'admin:sau_sheep_change' sheep.id %}">Advanced editor</a></li>
       <li><a href="{% url 'admin:sau_sheep_delete' sheep.id %}">Delete Sheep</a></li>
   </ul>

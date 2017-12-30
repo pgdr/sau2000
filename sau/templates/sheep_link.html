@@ -1,6 +1,6 @@
 {% if sheep %}
 {% if tree != "only" %}
-<a href="{% url 'sau' sheep.slug %}">{{sheep.name}}</a>
+<a href="{% url 'sau' sheep.slug sheep.id %}">{{sheep.name}}</a>
 {% endif %}
 {% if tree != "no" %}
 {% endif %}

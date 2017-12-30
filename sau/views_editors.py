@@ -49,7 +49,7 @@ def add_dose(request, slug=''):
         form = DoseForm(request.POST)
         if form.is_valid():
             _save_dose(request, slug)
-            return redirect('sau', slug=slug)
+            return redirect('sau', slug=slug, sheep_id=sheep_id)
         else:
             form = DoseForm(initial={
                 'sheep': current_sheep,
@@ -104,7 +104,7 @@ def _new_sheep(request):
             messages.success(request,
                              'Created %s.  <a href="%s">Add another.</a>' %
                              (sheep.name, reverse('new_sheep')))
-            return redirect('sau', slug=sheep.slug)
+            return redirect('sau', slug=sheep.slug, sheep_id=sheep.id)
         # If form was not valid, it needs to be returned as-is, since it keeps
         # track of the errors.
         else:
@@ -122,7 +122,7 @@ def _edit_sheep(request, sheep):
         form = SheepForm(request.POST, instance=sheep)
         if form.is_valid():
             s = form.save()
-            return redirect('sau', slug=s.slug)
+            return redirect('sau', slug=s.slug, sheep_id=s.id)
         # Form not valid, let it pass through to the context.
 
     elif request.method == "GET":

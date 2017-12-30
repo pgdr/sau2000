@@ -2,7 +2,7 @@
 {% load humanize %}
 
 {% block breadcrumb %}
-<li><a href="{% url 'sau' sheep.slug %}">{{sheep.name}}</a></li>
+<li><a href="{% url 'sau' sheep.slug sheep.id %}">{{sheep.name}}</a></li>
 <li><span>Drug</span></li>
 {% endblock %}
 
