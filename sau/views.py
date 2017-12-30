@@ -43,8 +43,8 @@ def index(request):
 
 
 @login_required
-def sau(request, slug=""):
-    current_sheep = _get_sheep_or_404(request, slug)
+def sau(request, slug="", sheep_id=None):
+    current_sheep = _get_sheep_or_404(request, slug, sheep_id)
     doses = Dose.get(sheep=current_sheep)
 
     subtree = current_sheep.children_tree
@@ -69,30 +69,6 @@ def sau(request, slug=""):
             'doses': doses,
         })
 
-
-@login_required
-def tree(request, slug=''):  # genealogy
-    current_sheep = _get_sheep_or_404(request, slug)
-    subtree = current_sheep.children_tree
-
-    # statistics
-    dead = [s for s in subtree if s.dead is not None]
-    svgs = get_statplots(dead, subtree)
-    stat = get_statistics(dead, subtree)
-
-    prod_children = [s for s in subtree if s.alive]
-    dead_children = [s for s in subtree if s not in prod_children]
-
-    return TemplateResponse(
-        request,
-        'genealogy.html',
-        context={
-            'sheep': current_sheep,
-            'prod_children': prod_children,
-            'dead_children': dead_children,
-            'stats': stat,
-            'svgs': svgs,
-        })
 
 
 @login_required
