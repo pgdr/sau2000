@@ -125,6 +125,25 @@ class Sheep(models.Model):
         self.slug = slugify(self.name)
         super(Sheep, self).save(*args, **kwargs)
 
+    def batch(*, farm, mother, father, ewes, rams, birth_date_utc):
+        return [
+            Sheep.objects.create(name='Lamb %d of %s %d',
+                                 farm=farm,
+                                 mother=mother,
+                                 father=father,
+                                 birth_date_utc=birth_date_utc,
+                                 sex='f')
+                                 for _ in range(ewes)
+               ] + [
+            Sheep.objects.create(name='Lamb %d of %s %d',
+                                 farm=farm,
+                                 mother=mother,
+                                 father=father,
+                                 birth_date_utc=birth_date_utc,
+                                 sex='m')
+                                 for _ in range(rams)
+               ]
+
 
 class Medicine(models.Model):
     name = models.CharField(max_length=100)

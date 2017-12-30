@@ -2,7 +2,7 @@ from datetime import datetime as dt
 from django.test import TestCase
 from sau.models import Sheep, Farm
 
-from .data import generate_test_db, get_sheep
+from .data import generate_test_db, get_sheep, date
 
 
 class SheepTestcase(TestCase):
@@ -85,3 +85,53 @@ class SheepTestcase(TestCase):
         sau.save()
 
         self.assertEqual(f.name, sau.farm.name)
+
+
+class BatchTestCase(TestCase):
+    def setUp(self):
+        generate_test_db()
+
+        self.father = Sheep.objects.create(
+            name='father',
+            farm=Farm.objects.all()[0],
+            birth_date_utc=dt.now(),
+        )
+
+        self.mother = Sheep.objects.create(
+            name='mother',
+            farm=Farm.objects.all()[0],
+            birth_date_utc=dt.now(),
+        )
+
+    def test_mother_only(self):
+        Sheep.batch(farm=Farm.objects.all()[0],
+                            mother=self.mother,
+                            father=None,
+                            ewes=2,
+                            rams=0,
+                            birth_date_utc=date())
+
+        self.assertEqual(2, len(self.mother.children))
+
+    def test_with_father(self):
+        batch = Sheep.batch(farm=Farm.objects.all()[0],
+                            mother=self.mother,
+                            father=self.father,
+                            ewes=2,
+                            rams=1,
+                            birth_date_utc=date())
+
+        self.assertEqual(3, len(self.father.children))
+        self.assertEqual(set([date()]), set([x.birth_date_utc for x in batch]))
+
+    def test_children(self):
+        batch = Sheep.batch(farm=Farm.objects.all()[0],
+                            mother=self.mother,
+                            father=self.father,
+                            ewes=3,
+                            rams=2,
+                            birth_date_utc=date())
+        ewes = len([x for x in batch if x.sex == 'f'])
+        rams = len([x for x in batch if x.sex == 'm'])
+        self.assertEqual(3, ewes)
+        self.assertEqual(2, rams)
