@@ -22,7 +22,7 @@ class TemplateTestcase(TestCase):
 
     def test_nologin_site(self):
         client = self.login(do_login=False)
-        for url in ('/', '/sau/britanna', '/sau/nosuchsau'):
+        for url in ('/', '/sau/britanna/1', '/sau/nosuchsau/100'):
             response = client.get(url, follow=True)
             self.assertEqual(response.status_code, 200, msg='on url=%s' % url)
             self.assertIn('Django admin', str(response.content))  # go to admin
@@ -35,7 +35,7 @@ class TemplateTestcase(TestCase):
         client = self.login(do_login=False)
         login_ = client.login(username='nouser', password='nopass')
         self.assertFalse(login_)
-        response = client.get('/sau/britanna', follow=True)
+        response = client.get('/sau/britanna/1', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn('Django admin', str(response.content))  # go to admin
 
@@ -47,7 +47,7 @@ class TemplateTestcase(TestCase):
         self.assertIn('Smeagol', str(response.content))
 
     def test__self_setup(self):
-        self.assertEqual(9, len(Sheep.objects.all()))
+        self.assertEqual(10, len(Sheep.objects.all()))
 
     def test_index(self):
         client = self.login(do_login=True)
@@ -58,7 +58,7 @@ class TemplateTestcase(TestCase):
 
     def test_sau_statistics(self):
         client = self.login()
-        html = self._get_html(client, '/sau/britanna')
+        html = self._get_html(client, '/sau/britanna/1')
         self.assertIn('min: 10', html)
         self.assertIn('max: 12', html)
         self.assertEqual(3, html.count('<svg'))
@@ -70,7 +70,7 @@ class TemplateTestcase(TestCase):
 
     def test_sau_edit(self):
         client = self.login()
-        html = self._get_html(client, '/sau/britanna/edit')
+        html = self._get_html(client, '/sau/britanna/1/edit')
         self.assertIn('Advanced editor', html)
 
     def test_search(self):

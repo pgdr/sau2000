@@ -7,7 +7,7 @@ from .data import generate_test_db, get_sheep
 class MedicineTestcase(TestCase):
     def setUp(self):
         generate_test_db()
-        self.l, self.r = get_sheep(('lolcakes', 'rambo'))
+        self.l, self.r = get_sheep((2, 3))
 
         self.med = Medicine.objects.create(
             name='Paracit', description='For headaches or headcakes')
