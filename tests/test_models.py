@@ -2,7 +2,7 @@ from datetime import datetime as dt
 from django.test import TestCase
 from sau.models import Sheep, Farm
 
-from .data import generate_test_db, get_sheep
+from .data import generate_test_db, get_sheep, date
 
 
 class SheepTestcase(TestCase):
@@ -85,3 +85,25 @@ class SheepTestcase(TestCase):
         sau.save()
 
         self.assertEqual(f.name, sau.farm.name)
+
+    def test_batch(self):
+        britanna, rambo = get_sheep(('britanna', 'rambo'))
+        self.assertEqual(9, len(Sheep.objects.all()))
+        self.assertEqual(3, len(britanna.children))
+        self.assertEqual(6, len(rambo.children))
+
+        batch = Sheep.batch(farm=Farm.objects.all()[0],
+                            mother=britanna,
+                            father=rambo,
+                            ewes=3,
+                            rams=2,
+                            birth_date_utc=date())
+        self.assertEqual(5, len(batch))
+        ewes = len([x for x in batch if x.sex == 'f'])
+        rams = len([x for x in batch if x.sex == 'm'])
+        self.assertEqual(3, ewes)
+        self.assertEqual(2, rams)
+        self.assertEqual(set([date()]), set([x.birth_date_utc for x in batch]))
+        self.assertEqual(9+5, len(Sheep.objects.all()))
+        self.assertEqual(3+5, len(britanna.children))
+        self.assertEqual(6+5, len(rambo.children))
