@@ -88,9 +88,9 @@ class SheepTestcase(TestCase):
 
     def test_batch(self):
         britanna, rambo = get_sheep(('britanna', 'rambo'))
-        self.assertEqual(9, len(Sheep.objects.all()))
-        self.assertEqual(3, len(britanna.children))
-        self.assertEqual(6, len(rambo.children))
+        NUM_ALL = len(Sheep.objects.all())
+        NUM_BRI = len(britanna.children)
+        NUM_RAM = len(rambo.children)
 
         batch = Sheep.batch(farm=Farm.objects.all()[0],
                             mother=britanna,
@@ -104,6 +104,6 @@ class SheepTestcase(TestCase):
         self.assertEqual(3, ewes)
         self.assertEqual(2, rams)
         self.assertEqual(set([date()]), set([x.birth_date_utc for x in batch]))
-        self.assertEqual(9+5, len(Sheep.objects.all()))
-        self.assertEqual(3+5, len(britanna.children))
-        self.assertEqual(6+5, len(rambo.children))
+        self.assertEqual(NUM_ALL + 5, len(Sheep.objects.all()))
+        self.assertEqual(NUM_BRI + 5, len(britanna.children))
+        self.assertEqual(NUM_RAM + 5, len(rambo.children))
