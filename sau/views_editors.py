@@ -10,7 +10,7 @@ from django.http import Http404
 from django.utils.translation import gettext as _
 from django.urls import reverse
 
-from .forms import DoseForm, SheepForm
+from .forms import DoseForm, SheepForm, SheepBatchForm
 
 from .views_util import _get_sheep_or_404, _get_sheep
 
@@ -133,3 +133,42 @@ def _edit_sheep(request, sheep):
             'form': form,
             'sheep': sheep
         })
+
+def _save_sheep_batch(request, form):
+    data = form.cleaned_data
+    mother, father, = data.get('mother', None), data.get('father', None)
+    birth_date_utc = data['birth_date_utc']
+    try:
+        rams, ewes = int(data['rams'].value), int(data['ewes'].value)
+    except ValueError:
+        raise ValueError('rams and ewes must be integer in batch form')
+    batch = Sheep.batch(farm,
+                        mother=mother,
+                        father=father,
+                        ewes=ewes,
+                        rams=rams,
+                        birth_date_utc=_date_with_now_time(birth_date_utc))
+    return batch
+
+
+def add_sheep_batch(request):
+    if request.method == "POST":
+        form = SheepBatchForm(request.POST)
+        if form.is_valid():
+            batch = _save_sheep_batch(request, form)
+            rams = len([x for x in batch if x.sex == 'm'])
+            ewes = len(batch) - len(rams)
+            messages.success(request,
+                             'Created %d rams, %d ewes.  <a href="%s">Add another.</a>' %
+                             (sheep.name, reverse('add_sheep_batch')))
+            return redirect('index')
+        # If form was not valid, it needs to be returned as-is, since it keeps
+        # track of the errors.
+        else:
+            messages.error(request,
+                           _('Form had errors, could not create batch.'))
+
+    elif request.method == "GET":
+        form = SheepBatchForm()
+
+    return TemplateResponse(request, 'sau_add_batch.html', context={'form': form})

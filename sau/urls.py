@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^stats$', views.stats, name='stats'),  # this can later be stats/2016
     url(r'^new/', views.create_or_edit_sheep, name='new_sheep'),
+    url(r'^new_batch/', views.add_sheep_batch, name='add_sheep_batch'),
     url(r'^sau/(?P<slug>[-\w]{1,255})/(?P<sheep_id>\d+)$', views.sau, name='sau'),
     url(r'^sau/(?P<slug>[-\w]{1,255})/(?P<sheep_id>\d+)/dose', views.add_dose, name='dose'),
     url(r'^sau/(?P<slug>[-\w]{1,255})/(?P<sheep_id>\d+)/edit', views.create_or_edit_sheep, name='edit_sheep'),

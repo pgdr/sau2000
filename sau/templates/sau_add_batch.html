@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+{% load humanize %}
+
+{% block breadcrumb %}
+<li><span>New batch</span></li>
+{% endblock %}
+
+{% block content %}
+
+<div class="content-box">
+<h2>New Sheep batch</h2>
+
+<form class="pure-form pure-form-stacked{% if form.errors %} form-errors{% endif %}" method="POST">
+  {% csrf_token %}
+  <fieldset>
+    <ul class="form-list">
+    {% for field in form.visible_fields %}
+        {% include 'partials/form_field.html' with field=field %}
+    {% endfor %}
+    </ul>
+    {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+    <input type="submit" value="Save" />
+  </fieldset>
+</form>
+</div>
+
+
+{% endblock %}
