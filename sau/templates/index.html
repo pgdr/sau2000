@@ -52,7 +52,9 @@
       {% block content %}
       <div class="content-box">
 
-        <h2 class="farm-name">{{farm.name}} <a href="{% url 'new_sheep' %}">(+)</a></h2>
+        <h2 class="farm-name">{{farm.name}} <a href="{% url 'new_sheep' %}">(+)</a>
+                                            <a href="{% url 'new_sheep_batch' %}">(++)</a>
+</h2>
 
         {% if is_search %}
         <ul class="messages search">
